@@ -6,4 +6,5 @@ export enum ErrorKeys {
   UnhandledEvent = 'Unhandled Event',
   PublishFailed = 'Publish Failed',
   PollingFailed = 'Polling Failed',
+  ProcessingFailed = 'ProcessingFailed',
 }

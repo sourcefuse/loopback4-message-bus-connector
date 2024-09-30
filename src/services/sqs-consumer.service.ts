@@ -1,17 +1,17 @@
-import {extensionPoint, extensions, Getter, inject} from '@loopback/core';
-import {SqsConfig, SqsConsumer} from '../sqstypes';
-import {ConsumerExtensionPoint, SqsClientBindings} from '../sqskeys';
 import {
   DeleteMessageCommand,
   Message,
   ReceiveMessageCommand,
   SQSClient,
 } from '@aws-sdk/client-sqs';
+import {extensionPoint, extensions, Getter, inject} from '@loopback/core';
 import {ILogger, LOGGER} from '@sourceloop/core';
 import {ErrorKeys} from '../error-keys';
+import {ConsumerExtensionPoint, SqsClientBindings} from '../sqskeys';
+import {SqsConfig, SqsConsumer} from '../sqstypes';
 
 @extensionPoint(ConsumerExtensionPoint.key)
-/* It creates an SQS consumer client, polls messages from the queue, 
+/* It creates an SQS consumer client, polls messages from the queue,
 and processes them using registered consumers */
 export class SqsConsumerService {
   private isPolling = true;

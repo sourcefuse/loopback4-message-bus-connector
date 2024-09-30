@@ -1,10 +1,11 @@
-import {inject, Provider} from '@loopback/core';
-import {ILogger, LOGGER} from '@sourceloop/core';
 import {
   SendMessageCommand,
   SendMessageCommandInput,
   SQSClient,
 } from '@aws-sdk/client-sqs';
+import {inject, Provider} from '@loopback/core';
+import {ILogger, LOGGER} from '@sourceloop/core';
+import {ErrorKeys} from '../error-keys';
 import {SqsClientBindings} from '../sqskeys';
 import {
   IStreamDefinitionSQS,
@@ -12,25 +13,18 @@ import {
   SqsConfig,
   SqsSendMessageOptions,
 } from '../sqstypes';
-import {ErrorKeys} from '../error-keys';
 
 /* A factory provider that creates a producer factory
    which sends messages to an SQS queue using AWS SDK v3 */
 export class SqsProducerFactoryProvider<T extends IStreamDefinitionSQS>
   implements Provider<ProducerFactoryType<T>>
 {
-  private client: SQSClient;
   constructor(
     @inject(SqsClientBindings.SqsClient)
-    private clientConfig: SqsConfig,
+    private client: SqsConfig,
     @inject(LOGGER.LOGGER_INJECT) private readonly logger: ILogger,
-  ) {
-    this.client = new SQSClient([
-      {
-        ...clientConfig,
-      },
-    ]);
-  }
+    private clientsqs = new SQSClient({}),
+  ) {}
 
   value(): ProducerFactoryType<T> {
     return groupId => {
@@ -44,21 +38,19 @@ export class SqsProducerFactoryProvider<T extends IStreamDefinitionSQS>
             await Promise.all(
               payload.map(async message => {
                 const params: SendMessageCommandInput = {
-                  QueueUrl: this.clientConfig.queueUrl,
+                  QueueUrl: this.client.queueUrl,
                   MessageBody: JSON.stringify({
                     event: type,
                     data: message,
                   }),
+                  // MessageGroupId: options.groupId,
                   MessageGroupId: groupId,
                   DelaySeconds: options.delaySeconds,
-                  MessageAttributes: {...options.messageAttributes},
+                  MessageAttributes: options.messageAttributes,
                   MessageDeduplicationId: options.messageDeduplicationId,
                 };
-                if (this.clientConfig.queueType !== 'fifo') {
-                  delete params.MessageGroupId;
-                }
                 const command = new SendMessageCommand(params);
-                const result = await this.client.send(command);
+                const result = await this.clientsqs.send(command);
 
                 this.logger.info(
                   `Message sent to SQS with ID: ${result.MessageId}`,
