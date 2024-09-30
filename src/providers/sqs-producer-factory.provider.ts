@@ -19,12 +19,18 @@ import {
 export class SqsProducerFactoryProvider<T extends IStreamDefinitionSQS>
   implements Provider<ProducerFactoryType<T>>
 {
+  private client: SQSClient;
   constructor(
     @inject(SqsClientBindings.SqsClient)
-    private client: SqsConfig,
+    private clientConfig: SqsConfig,
     @inject(LOGGER.LOGGER_INJECT) private readonly logger: ILogger,
-    private clientsqs = new SQSClient({}),
-  ) {}
+  ) {
+    this.client = new SQSClient([
+      {
+        ...clientConfig,
+      },
+    ]);
+  }
 
   value(): ProducerFactoryType<T> {
     return groupId => {
@@ -38,19 +44,21 @@ export class SqsProducerFactoryProvider<T extends IStreamDefinitionSQS>
             await Promise.all(
               payload.map(async message => {
                 const params: SendMessageCommandInput = {
-                  QueueUrl: this.client.queueUrl,
+                  QueueUrl: this.clientConfig.queueUrl,
                   MessageBody: JSON.stringify({
                     event: type,
                     data: message,
                   }),
-                  // MessageGroupId: options.groupId,
                   MessageGroupId: groupId,
                   DelaySeconds: options.delaySeconds,
-                  MessageAttributes: options.messageAttributes,
+                  MessageAttributes: {...options.messageAttributes},
                   MessageDeduplicationId: options.messageDeduplicationId,
                 };
+                if (this.clientConfig.queueType !== 'fifo') {
+                  delete params.MessageGroupId;
+                }
                 const command = new SendMessageCommand(params);
-                const result = await this.clientsqs.send(command);
+                const result = await this.client.send(command);
 
                 this.logger.info(
                   `Message sent to SQS with ID: ${result.MessageId}`,
