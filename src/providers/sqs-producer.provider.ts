@@ -6,9 +6,9 @@ import {
 import {inject, Provider} from '@loopback/core';
 import {ILogger, LOGGER} from '@sourceloop/core';
 import {ErrorKeys} from '../error-keys';
+import {queueBindings} from '../keys';
 import {SqsConfig, SqsSendMessage} from '../sqstypes';
 import {Producer} from '../types';
-import {queueBindings} from '../keys';
 
 /**
  * A provider that creates a SQS producer  for sending messages to a SQS queue.
@@ -64,12 +64,7 @@ export class SqsProducerProvider implements Provider<Producer<SqsSendMessage>> {
           this.logger.error(e.stack); // Optionally log the stack trace for debugging
           throw e;
         }
-        // catch (e) {
-        //   this.logger.error(
-        //     `${ErrorKeys.PublishFailed}: ${JSON.stringify(e)}`,
-        //   );
-        //   throw e;
-        // }
+
       },
     };
   }
