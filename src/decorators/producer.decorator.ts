@@ -1,14 +1,26 @@
 import {inject} from '@loopback/core';
-import {producerKey} from '../sqskeys';
-
+import {queueConfigProducerProvider} from '../keys';
 /**
- * get producer for the particular group id
+ * Get producer for the particular group id and queue type
+ * @param queueType - 'sqs' or 'bullmq'
  * @param groupId
- * */
-export function producer(groupId?: string) {
-  // if (exists)
-  return inject(producerKey(groupId), {optional: false});
+ */
+import {SqsProducerProvider} from '../providers/sqs-producer.provider';
 
-  // Return a no-op decorator if exists is false
-  // return inject(producerKey('Transformed'), {optional: true});
+import {BullmqProducerProvider} from '../providers';
+export function producer(queueType: string = 'SQS') {
+  switch (queueType) {
+    case 'SQS':
+      return inject(queueConfigProducerProvider, {
+        resolver: SqsProducerProvider,
+        optional: true,
+      });
+    case 'BullMQ':
+      return inject(queueConfigProducerProvider, {
+        resolver: BullmqProducerProvider,
+        optional: true,
+      });
+    default:
+      return inject('', {optional: true});
+  }
 }

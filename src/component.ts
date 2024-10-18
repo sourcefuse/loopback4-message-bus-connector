@@ -8,16 +8,19 @@ import {
   inject,
   injectable,
 } from '@loopback/core';
-import {MessageBusQueueConnectorsComponentBindings} from './keys';
+import {
+  MessageBusQueueConnectorsComponentBindings,
+  queueBindings,
+} from './keys';
 import {
   DEFAULT_MESSAGE_BUS_QUEUE_CONNECTORS_OPTIONS,
   MessageBusQueueConnectorsComponentOptions,
+  QueueConfig,
 } from './types';
-import {producerKey, SqsClientBindings} from './sqskeys';
-import {SqsProducerFactoryProvider} from './providers';
-import {SqsConsumerService} from './services';
-import {SqsConfig} from './sqstypes';
-import {SQSObserver} from './observers';
+import {SqsProducerProvider, BullmqProducerProvider} from './providers';
+import {SqsConsumerService, BullMQConsumerService} from './services';
+
+import {BullMQObserver, SQSObserver} from './observers';
 
 // Configure the binding for MessageBusQueueConnectorsComponent
 @injectable({
@@ -28,41 +31,31 @@ import {SQSObserver} from './observers';
 export class MessageBusQueueConnectorsComponent implements Component {
   constructor(
     @inject(CoreBindings.APPLICATION_INSTANCE)
-    private application: Application,
+    private readonly application: Application,
     @config()
-    private options: MessageBusQueueConnectorsComponentOptions = DEFAULT_MESSAGE_BUS_QUEUE_CONNECTORS_OPTIONS,
-    @inject(SqsClientBindings.SqsClient)
-    private clientConfig: SqsConfig,
+    private readonly options: MessageBusQueueConnectorsComponentOptions = DEFAULT_MESSAGE_BUS_QUEUE_CONNECTORS_OPTIONS,
+
+    @inject(queueBindings.queueConfig, {optional: true})
+    private readonly queueConfig: QueueConfig,
   ) {
-    this.application
-      .bind(SqsClientBindings.ProducerFactory)
-      .toProvider(SqsProducerFactoryProvider)
-      .inScope(BindingScope.SINGLETON);
-
-    this.application.service(SqsConsumerService);
-
-    const producerFactory = this.application.getSync(
-      SqsClientBindings.ProducerFactory,
-    );
-
-    this.clientConfig.groupIds?.forEach(groupId => {
+    //Enable generic queue start configs
+    if (this.queueConfig.queueType === 'SQS') {
       this.application
-        .bind(producerKey(groupId))
-        .to(producerFactory(groupId))
+        .bind('providers.QueueProducerProvider')
+        .toProvider(SqsProducerProvider)
         .inScope(BindingScope.SINGLETON);
-    });
-    // Default binding for Producer with no group id
-    this.application
-      .bind(producerKey())
-      .to(producerFactory())
-      .inScope(BindingScope.SINGLETON);
 
-    this.application.bind(SqsClientBindings.ConsumerConfiguration).to({});
-    this.application
-      .bind(SqsClientBindings.ProducerFactory)
-      .toProvider(SqsProducerFactoryProvider)
-      .inScope(BindingScope.SINGLETON);
+      this.application.service(SqsConsumerService);
+      this.application.lifeCycleObserver(SQSObserver);
+    } else if (this.queueConfig.queueType === 'BullMQ') {
+      this.application
+        .bind('providers.QueueProducerProvider')
+        .toProvider(BullmqProducerProvider)
+        .inScope(BindingScope.SINGLETON);
 
-    this.application.lifeCycleObserver(SQSObserver);
+      this.application.service(BullMQConsumerService);
+
+      this.application.lifeCycleObserver(BullMQObserver);
+    }
   }
 }

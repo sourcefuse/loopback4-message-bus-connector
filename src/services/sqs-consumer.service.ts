@@ -1,41 +1,61 @@
-import {extensionPoint, extensions, Getter, inject} from '@loopback/core';
-import {SqsConfig, SqsConsumer} from '../sqstypes';
-import {ConsumerExtensionPoint, SqsClientBindings} from '../sqskeys';
 import {
   DeleteMessageCommand,
   Message,
   ReceiveMessageCommand,
   SQSClient,
 } from '@aws-sdk/client-sqs';
+import {extensionPoint, Getter, inject} from '@loopback/core';
 import {ILogger, LOGGER} from '@sourceloop/core';
 import {ErrorKeys} from '../error-keys';
+import {queueBindings} from '../keys';
+import {SqsConsumerExtensionPoint} from '../sqskeys';
+import {SqsConfig} from '../sqstypes';
+import {IConsumerHandler} from '../types';
 
-@extensionPoint(ConsumerExtensionPoint.key)
-/* It creates an SQS consumer client, polls messages from the queue, 
+@extensionPoint(SqsConsumerExtensionPoint.key)
+/* It creates an SQS consumer client, polls messages from the queue,
 and processes them using registered consumers */
 export class SqsConsumerService {
+  private readonly client: SQSClient;
   private isPolling = true;
-
   constructor(
     @extensions()
-    private getConsumers: Getter<SqsConsumer[]>,
-    @inject(SqsClientBindings.SqsClient)
-    private clientConfig: SqsConfig,
+    private readonly getConsumerHandlers: Getter<IConsumerHandler[]>,
+    @inject(queueBindings.queueConfig, {optional: true})
+    private readonly sqsConfig: SqsConfig,
     @inject(LOGGER.LOGGER_INJECT) private readonly logger: ILogger,
-    private clientsqs = new SQSClient({}),
-  ) {}
+  ) {
+    if (!this.sqsConfig) {
+      this.logger.warn(`No SQS config found.`);
+      console.warn(`No SQS config found.`);
+      return;
+    }
+    this.client = new SQSClient(this.sqsConfig);
+
+  }
 
   async consume(): Promise<void> {
-    const consumers = await this.getConsumers();
-    const consumerMap = new Map<string, SqsConsumer>();
+    const consumers = await this.getConsumerHandlers();
+
+    if (!consumers || consumers.length === 0) {
+      this.logger.warn(
+        `No SQS consumers found. Please register consumers using the @bullmqConsumer decorator.`,
+      );
+      console.warn(
+        `No SQS consumers found. Please register consumers using the @bullmqConsumer decorator.`,
+      );
+      return;
+    }
+    const consumerMap = new Map<string, IConsumerHandler>();
 
     for (const consumer of consumers) {
-      if (!consumer.event) {
+      if (!consumer.groupId) {
         throw new Error(
-          `${ErrorKeys.ConsumerWithoutEventType}: ${JSON.stringify(consumer)}`,
+          `${ErrorKeys.ConsumerWithoutGroupId}: ${JSON.stringify(consumer)}`,
         );
       }
-      const key = this.getKey(consumer.event, consumer.groupId);
+      // const key = this.getKey(consumer.event, consumer.groupId);
+      const key = consumer.groupId;
       consumerMap.set(key, consumer);
     }
 
@@ -44,15 +64,15 @@ export class SqsConsumerService {
   }
 
   private async pollMessages(
-    consumerMap: Map<string, SqsConsumer>,
+    consumerMap: Map<string, IConsumerHandler>,
   ): Promise<void> {
     while (this.isPolling) {
       try {
-        const data = await this.clientsqs.send(
+        const data = await this.client.send(
           new ReceiveMessageCommand({
-            QueueUrl: this.clientConfig.queueUrl,
-            MaxNumberOfMessages: this.clientConfig.maxNumberOfMessages, // Adjust based on your needs
-            WaitTimeSeconds: this.clientConfig.waitTimeSeconds,
+            QueueUrl: this.sqsConfig.queueUrl,
+            MaxNumberOfMessages: this.sqsConfig.maxNumberOfMessages, // Adjust based on your needs
+            WaitTimeSeconds: this.sqsConfig.waitTimeSeconds,
           }),
         );
 
@@ -61,20 +81,17 @@ export class SqsConsumerService {
             async (message: Message) => {
               if (message.Body) {
                 const parsedMessage = JSON.parse(message.Body);
-                const key = this.getKey(
-                  parsedMessage.event,
-                  message.Attributes?.MessageGroupId,
-                );
 
-                const consumer = consumerMap.get(key);
-                if (consumer) {
-                  await consumer.handler(parsedMessage.data, {
-                    ...message,
-                  });
+                const key = parsedMessage.groupId;
+                const consumerObj = consumerMap.get(key);
+
+
+                if (consumerObj) {
+                  await consumerObj.handler(parsedMessage.data);
                   // Delete the message after successful processing
-                  await this.clientsqs.send(
+                  await this.client.send(
                     new DeleteMessageCommand({
-                      QueueUrl: this.clientConfig.queueUrl,
+                      QueueUrl: this.sqsConfig.queueUrl,
                       ReceiptHandle: message.ReceiptHandle,
                     }),
                   );
@@ -98,12 +115,5 @@ export class SqsConsumerService {
 
   async stop() {
     this.isPolling = false;
-  }
-
-  private getKey(event: string, groupId?: string): string {
-    if (this.clientConfig.queueType === 'standard') {
-      return `${String(event)}`;
-    }
-    return `${groupId}.${String(event)}`;
   }
 }

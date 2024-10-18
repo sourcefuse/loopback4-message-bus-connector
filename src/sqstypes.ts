@@ -1,65 +1,7 @@
-import {
-  Message,
-  MessageAttributeValue,
-  SQSClientConfig as AWSSQSClientConfig,
-} from '@aws-sdk/client-sqs';
-
 export interface SqsClientOptions {
   clientConfig: SQSClientConfig;
   queueUrls?: string[];
   initObservers?: boolean;
-}
-
-export type SQSClientConfig = AWSSQSClientConfig;
-
-export interface IStreamDefinitionSQS {
-  topic: string;
-  queueUrl: string;
-  messages: {};
-}
-
-export type TopicForStream<Stream extends IStreamDefinitionSQS> =
-  Stream['topic'];
-export type EventsInStream<Stream extends IStreamDefinitionSQS> =
-  keyof Stream['messages'];
-export type QueueUrlForStream<Stream extends IStreamDefinitionSQS> =
-  Stream['queueUrl'];
-
-export interface IConsumer<
-  Stream extends IStreamDefinitionSQS,
-  K extends EventsInStream<Stream>,
-> {
-  topic: TopicForStream<Stream>;
-  queueUrl?: QueueUrlForStream<Stream>;
-  event: K;
-  handler: StreamHandler<Stream, K>;
-}
-
-export interface Producer<Stream extends IStreamDefinitionSQS> {
-  send<Type extends EventsInStream<Stream>>(
-    type: Type,
-    payload: Stream['messages'][Type][],
-    options?: SqsSendMessageOptions,
-  ): Promise<void>;
-}
-
-export type ProducerFactoryType<Stream extends IStreamDefinitionSQS> = (
-  groupId?: string,
-) => Producer<Stream>;
-
-export type StreamHandler<
-  Stream extends IStreamDefinitionSQS,
-  K extends EventsInStream<Stream>,
-> = (payload: Stream['messages'][K]) => Promise<void>;
-
-export interface SqsConfig {
-  initObservers: boolean;
-  clientConfig: AWSSQSClientConfig;
-  queueUrl: string;
-  maxNumberOfMessages: number;
-  waitTimeSeconds: number;
-  groupIds?: string[];
-  queueType: 'standard' | 'fifo';
 }
 
 export type SqsSendMessageOptions = {
@@ -91,4 +33,79 @@ export interface SqsConsumer<Payload = {}> {
    * @param message - sqs message object without string body
    * */
   handler(payload: Payload, message: SqsMessage): Promise<void>;
+}
+
+//==================================================================================New types
+import {
+  Message,
+  MessageAttributeValue,
+  SQSClient,
+  SQSClientConfig,
+} from '@aws-sdk/client-sqs';
+
+//SQS connector
+export interface AwsSQSClientConfig {
+  region: string;
+  credentials: {
+    accessKeyId: string;
+    secretAccessKey: string;
+  };
+}
+
+//SQS config
+export interface SqsConfig {
+  queueType: 'SQS';
+  initObservers: boolean;
+  SqsClient: SQSClient;
+  clientConfig?: SQSClientConfig;
+  queueUrl: string;
+  maxNumberOfMessages?: number;
+  waitTimeSeconds?: number;
+  DelaySeconds?: number;
+  groupIds?: string[];
+  sqsType: 'standard' | 'fifo';
+}
+
+//For sending message to sqs
+export interface SqsSendMessage<T = string> {
+  DelaySeconds?: number;
+  MessageAttributes?: MessageAttributeValue;
+  body: T;
+  MessageDeduplicationId?: string; // Required for FIFO queues
+  MessageGroupId?: string; // Required for FIFO queues
+  QueueUrl?: string;
+}
+
+// Standard DataTypes
+type StandardDataType = 'String' | 'Number' | 'Binary';
+
+// Custom DataType extensions for Number and Binary
+type NumberCustomType = `${'Number'}.${'byte' | 'short' | 'int' | 'float'}`;
+type BinaryCustomType = `${'Binary'}.${'gif' | 'png' | 'jpg'}`;
+
+// Full DataType definition combining standard and custom types
+export type DataType = StandardDataType | NumberCustomType | BinaryCustomType;
+
+// Generic SqsMessageAttribute with custom DataType support
+export type SqsMessageAttribute<T extends string = string> = {
+  [K in T]: {
+    DataType: DataType; // Use the combined DataType
+    StringValue: string;
+  };
+};
+
+//For receive message from sqs
+export interface SqsReceiveMessage {
+  AttributeNames?: string[];
+  MaxNumberOfMessages?: number;
+  MessageAttributeNames?: string[];
+  QueueUrl: string;
+  VisibilityTimeout?: number;
+  WaitTimeSeconds?: number;
+}
+
+//For delete message from sqs
+export interface SqsDeleteMessage {
+  QueueUrl: string;
+  ReceiptHandle: string;
 }

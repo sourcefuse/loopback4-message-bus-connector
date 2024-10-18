@@ -1,1 +1,2 @@
-export * from './sqs-producer-factory.provider';
+export * from './sqs-producer.provider';
+export * from './bullmq-producer.provider';
