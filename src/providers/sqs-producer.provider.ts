@@ -44,12 +44,11 @@ export class SqsProducerProvider implements Provider<Producer<SqsSendMessage>> {
           const params: SendMessageCommandInput = {
             QueueUrl: options.QueueUrl,
             MessageBody: JSON.stringify({
-              groupId,
+              groupId: options.MessageGroupId ?? this.sqsConfig.groupIds?.[0],
               data: options.body,
             }),
 
-            MessageGroupId:
-              options.MessageGroupId ?? this.sqsConfig.groupIds?.[0],
+            MessageGroupId: groupId,
             DelaySeconds: options.DelaySeconds ?? this.sqsConfig?.DelaySeconds,
 
             MessageDeduplicationId: options.MessageDeduplicationId,
