@@ -24,7 +24,7 @@ describe('SqsProducerProvider', () => {
 
     // Sample SqsConfig
     sqsConfig = {
-      queueUrl: 'https://sqs.us-east-1.amazonaws.com/123456789012/MyQueue',
+      queueUrls: ['https://sqs.us-east-1.amazonaws.com/123456789012/MyQueue'],
       groupIds: ['group1'],
       sqsType: 'fifo',
       maxNumberOfMessages: 10,
@@ -47,6 +47,7 @@ describe('SqsProducerProvider', () => {
       body: 'Test Message',
       MessageGroupId: 'group1',
       DelaySeconds: 0,
+      QueueUrl: 'https://sqs.us-east-1.amazonaws.com/123456789012/MyQueue',
     };
 
     const sendMessageResult = {MessageId: '12345'};
@@ -79,6 +80,7 @@ describe('SqsProducerProvider', () => {
       body: 'Test Message',
       MessageGroupId: 'group1',
       DelaySeconds: 0,
+      QueueUrl: 'https://sqs.us-east-1.amazonaws.com/123456789012/MyQueue',
     };
 
     // Simulate an error from SQS send

@@ -49,7 +49,7 @@ const config = {
         maxAttempts: 3,
         retryMode: 'standard',
       },
-      queueUrl: process.env.SQS_QUEUE_URL,
+      queueUrls: [process.env.SQS_QUEUE_URL],
       groupId: process.env?.SQS_GROUP_ID ?? 'group1',
       maxNumberOfMessages: maxNumberOfMessages,
       waitTimeSeconds: waitTimeSeconds,
@@ -102,7 +102,7 @@ export class ProducerService {
   async extract() {
 
      await this.sqsProducer.send({body: {} //type InputMessageType ,
-          MessageGroupId: `group1`});
+          MessageGroupId: `group1`, QueueUrl: ""});
   }
 }
 ```

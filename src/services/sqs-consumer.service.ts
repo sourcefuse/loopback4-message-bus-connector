@@ -4,7 +4,7 @@ import {
   ReceiveMessageCommand,
   SQSClient,
 } from '@aws-sdk/client-sqs';
-import {extensionPoint, Getter, inject} from '@loopback/core';
+import {extensionPoint, extensions, Getter, inject} from '@loopback/core';
 import {ILogger, LOGGER} from '@sourceloop/core';
 import {ErrorKeys} from '../error-keys';
 import {queueBindings} from '../keys';
@@ -31,7 +31,6 @@ export class SqsConsumerService {
       return;
     }
     this.client = new SQSClient(this.sqsConfig);
-
   }
 
   async consume(): Promise<void> {
@@ -59,18 +58,20 @@ export class SqsConsumerService {
       consumerMap.set(key, consumer);
     }
 
-    // eslint-disable-next-line no-void
-    void this.pollMessages(consumerMap);
+    this.sqsConfig.queueUrls.forEach(queueUrl =>
+      this.pollMessages(queueUrl, consumerMap),
+    );
   }
 
   private async pollMessages(
+    queueUrl: string,
     consumerMap: Map<string, IConsumerHandler>,
   ): Promise<void> {
     while (this.isPolling) {
       try {
         const data = await this.client.send(
           new ReceiveMessageCommand({
-            QueueUrl: this.sqsConfig.queueUrl,
+            QueueUrl: queueUrl,
             MaxNumberOfMessages: this.sqsConfig.maxNumberOfMessages, // Adjust based on your needs
             WaitTimeSeconds: this.sqsConfig.waitTimeSeconds,
           }),
@@ -85,13 +86,12 @@ export class SqsConsumerService {
                 const key = parsedMessage.groupId;
                 const consumerObj = consumerMap.get(key);
 
-
                 if (consumerObj) {
                   await consumerObj.handler(parsedMessage.data);
                   // Delete the message after successful processing
                   await this.client.send(
                     new DeleteMessageCommand({
-                      QueueUrl: this.sqsConfig.queueUrl,
+                      QueueUrl: queueUrl,
                       ReceiptHandle: message.ReceiptHandle,
                     }),
                   );

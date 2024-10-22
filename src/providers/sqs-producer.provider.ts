@@ -37,10 +37,14 @@ export class SqsProducerProvider implements Provider<Producer<SqsSendMessage>> {
     return {
       send: async (options: SqsSendMessage) => {
         try {
+          let groupId = options.MessageGroupId ?? this.sqsConfig.groupIds?.[0];
+          if (this.sqsConfig.sqsType === 'standard') {
+            groupId = undefined;
+          }
           const params: SendMessageCommandInput = {
-            QueueUrl: this.sqsConfig.queueUrl,
+            QueueUrl: options.QueueUrl,
             MessageBody: JSON.stringify({
-              groupId: options.MessageGroupId ?? this.sqsConfig.groupIds?.[0],
+              groupId,
               data: options.body,
             }),
 
@@ -64,7 +68,6 @@ export class SqsProducerProvider implements Provider<Producer<SqsSendMessage>> {
           this.logger.error(e.stack); // Optionally log the stack trace for debugging
           throw e;
         }
-
       },
     };
   }

@@ -58,7 +58,7 @@ export interface SqsConfig {
   initObservers: boolean;
   SqsClient: SQSClient;
   clientConfig?: SQSClientConfig;
-  queueUrl: string;
+  queueUrls: string[];
   maxNumberOfMessages?: number;
   waitTimeSeconds?: number;
   DelaySeconds?: number;
@@ -73,7 +73,7 @@ export interface SqsSendMessage<T = string> {
   body: T;
   MessageDeduplicationId?: string; // Required for FIFO queues
   MessageGroupId?: string; // Required for FIFO queues
-  QueueUrl?: string;
+  QueueUrl: string;
 }
 
 // Standard DataTypes
