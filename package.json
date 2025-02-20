@@ -1,0 +1,144 @@
+{
+    "name": "@local/message-bus-queue-connectors",
+    "version": "0.0.1",
+    "description": "message-bus-queue-connectors",
+    "keywords": [
+        "loopback-extension",
+        "loopback"
+    ],
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "exports": {
+        ".": "./dist/index.js",
+        "./sqs": {
+            "type": "./dist/providers/sqs/index.d.ts",
+            "default": "./dist/providers/sqs/index.js"
+        },
+        "./bullmq": {
+            "type": "./dist/providers/bullmq/index.d.ts",
+            "default": "./dist/providers/bullmq/index.js"
+        }
+    },
+    "typesVersions": {
+        "*": {
+            "sqs": [
+                "./dist/providers/sqs/index.d.ts"
+            ],
+            "bullmq": [
+                "./dist/providers/bullmq/index.d.ts"
+            ]
+        }
+    },
+    "engines": {
+        "node": ">=18"
+    },
+    "scripts": {
+        "build": "lb-tsc",
+        "build:watch": "lb-tsc --watch",
+        "lint": "npm run eslint && npm run prettier:check",
+        "lint:fix": "npm run eslint:fix && npm run prettier:fix",
+        "prettier:cli": "lb-prettier \"**/*.ts\" \"**/*.js\"",
+        "prettier:check": "npm run prettier:cli -- -l",
+        "prettier:fix": "npm run prettier:cli -- --write",
+        "eslint": "eslint --report-unused-disable-directives .",
+        "eslint:fix": "npm run eslint -- --fix",
+        "pretest": "npm run rebuild",
+        "test": "lb-mocha --allow-console-logs \"dist/__tests__\"",
+        "test:dev": "lb-mocha --allow-console-logs dist/__tests__/**/*.js",
+        "clean": "lb-clean dist *.tsbuildinfo .eslintcache",
+        "rebuild": "npm run clean && npm run build",
+        "postinstall": "npm run build",
+        "prune": "npm prune --production"
+    },
+    "repository": {
+        "type": "git",
+        "url": ""
+    },
+    "author": "sadarunnisa-sf<sadarunnisa.sutar@sourcefuse.com>",
+    "license": "MIT",
+    "files": [
+        "README.md",
+        "dist",
+        "src",
+        "!*/__tests__"
+    ],
+    "peerDependencies": {
+        "@loopback/core": "^6.0.2",
+        "@sourceloop/core": "^14.1.2"
+    },
+    "dependencies": {
+        "@aws-sdk/client-sqs": "^3.658.1",
+        "@loopback/rest": "^14.0.2",
+        "@loopback/rest-explorer": "^7.0.2",
+        "bullmq": "^5.13.2",
+        "ioredis": "^5.3.2",
+        "tslib": "^2.6.2"
+    },
+    "devDependencies": {
+        "@eslint/js": "^9.20.0",
+        "@loopback/build": "^11.0.2",
+        "@loopback/core": "^6.0.2",
+        "@loopback/eslint-config": "^15.0.2",
+        "@loopback/testlab": "^7.0.2",
+        "@types/jest": "^29.5.5",
+        "@types/node": "^18.11.9",
+        "commitizen": "^4.2.4",
+        "cz-conventional-changelog": "^3.3.0",
+        "cz-customizable": "^6.3.0",
+        "cz-customizable-ghooks": "^2.0.0",
+        "eslint": "^8.57.1",
+        "git-release-notes": "^5.0.0",
+        "globals": "^15.15.0",
+        "husky": "^7.0.4",
+        "jsdom": "^21.0.0",
+        "semantic-release": "^19.0.3",
+        "simple-git": "^3.15.1",
+        "source-map-support": "^0.5.21",
+        "typescript": "~5.2.2",
+        "typescript-eslint": "^8.24.0"
+    },
+    "overrides":{
+    "@commitlint/config-lerna-scopes":{
+      "lerna":"^7.3.0"
+    }
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-customizable"
+    }
+  },
+  "release": {
+        "branches": [
+            "master"
+        ],
+        "plugins": [
+            [
+                "@semantic-release/commit-analyzer",
+                {
+                    "preset": "angular",
+                    "releaseRules": [
+                        {
+                            "type": "chore",
+                            "scope": "deps",
+                            "release": "patch"
+                        }
+                    ]
+                }
+            ],
+            "@semantic-release/release-notes-generator",
+            "@semantic-release/npm",
+            [
+                "@semantic-release/git",
+                {
+                    "assets": [
+                        "package.json",
+                        "CHANGELOG.md"
+                    ],
+                    "message": "chore(release): ${nextRelease.version} semantic"
+                }
+            ],
+            "@semantic-release/github"
+        ],
+        "repositoryUrl": "git@github.com:sourcefuse/loopback4-message-queue-connector.git"
+    }
+}
