@@ -23,6 +23,6 @@ export class SQSConsumerObserver implements LifeCycleObserver {
    * Stop all consumers when the application stops.
    */
   async stop(): Promise<void> {
-    await this.sqsConsumerService.stop();
+    this.sqsConsumerService.stop();
   }
 }

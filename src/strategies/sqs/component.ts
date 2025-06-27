@@ -19,8 +19,8 @@ export class SQSConnector implements Component {
   services?: ServiceOrProviderClass[];
   providers?: ProviderMap;
   controllers?: ControllerClass[];
-  lifeCycleObservers?: Constructor<LifeCycleObserver>[] | undefined;
-  bindings?: Binding<any>[] | undefined;
+  lifeCycleObservers?: Constructor<LifeCycleObserver>[];
+  bindings?: Binding<any>[];
 
   constructor(
     @inject(SQSBindings.Config, {optional: true})

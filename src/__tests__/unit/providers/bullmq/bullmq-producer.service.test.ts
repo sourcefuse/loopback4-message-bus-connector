@@ -78,12 +78,6 @@ describe('BullMQProducerProvider', () => {
     const mockJob = {id: 'job-id'};
     queueStub.add.resolves(mockJob as Job);
 
-    const sqsProvider = new BullMQProducerService(
-      {QueueName: 'test', redisConfig: {}} as BullMQConfig,
-      queueStub as unknown as Queue,
-      loggerStub,
-    );
-
     const messageMock = {
       name: 'test',
       data: {foo: 'bar'},

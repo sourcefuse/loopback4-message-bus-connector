@@ -32,56 +32,57 @@ export class SQSConsumerService {
    */
   public async startConsumer(): Promise<void> {
     const receiveMessages = async () => {
-      if (this.shuttingDown) return;
+      if (this.shuttingDown) {
+        return;
+      }
 
-        const command = new ReceiveMessageCommand({
-          AttributeNames: ['All'],
-          MaxNumberOfMessages:
-            this.sqsConfig.ConsumerConfig?.MaxNumberOfMessages ?? 10,
-          MessageAttributeNames: ['All'],
-          QueueUrl: this.sqsConfig.queueConfig.QueueUrl,
-          WaitTimeSeconds: this.sqsConfig.ConsumerConfig?.WaitTimeSeconds,
-        });
+      const command = new ReceiveMessageCommand({
+        AttributeNames: ['All'],
+        MaxNumberOfMessages:
+          this.sqsConfig.ConsumerConfig?.MaxNumberOfMessages ?? 10,
+        MessageAttributeNames: ['All'],
+        QueueUrl: this.sqsConfig.queueConfig.QueueUrl,
+        WaitTimeSeconds: this.sqsConfig.ConsumerConfig?.WaitTimeSeconds,
+      });
 
-        const response = await this.client.send(command);
+      const response = await this.client.send(command);
 
-        if (response.Messages && response.Messages.length > 0) {
-          await Promise.all(
-            response.Messages.map(async message => {
-              
-                const {Body, MessageAttributes, MessageId} = message;
+      if (response.Messages && response.Messages.length > 0) {
+        await Promise.all(
+          response.Messages.map(async message => {
+            const {Body, MessageAttributes, MessageId} = message;
 
-                if (!Body) throw new Error('Message body is undefined');
+            if (!Body) throw new Error('Message body is undefined');
 
-                const parsedBody = JSON.parse(Body);
-                const eventType = MessageAttributes?.EventType?.StringValue;
+            const parsedBody = JSON.parse(Body);
+            const eventType = MessageAttributes?.EventType?.StringValue;
 
-                if (!eventType) {
-                  this.logger.warn(
-                    `Event type is undefined for message: ${MessageId}`,
-                  );
-                  return;
-                }
+            if (!eventType) {
+              this.logger.warn(
+                `Event type is undefined for message: ${MessageId}`,
+              );
+              return;
+            }
 
-                await this.eventHandler.handle(
-                  eventType,
-                  parsedBody,
-                  QueueType.SQS,
-                );
+            await this.eventHandler.handle(
+              eventType,
+              parsedBody,
+              QueueType.SQS,
+            );
 
-                const deleteCommand = new DeleteMessageCommand({
-                  QueueUrl: this.sqsConfig.queueConfig.QueueUrl,
-                  ReceiptHandle: message.ReceiptHandle,
-                });
-                await this.client.send(deleteCommand);
+            const deleteCommand = new DeleteMessageCommand({
+              QueueUrl: this.sqsConfig.queueConfig.QueueUrl,
+              ReceiptHandle: message.ReceiptHandle,
+            });
+            await this.client.send(deleteCommand);
 
-                this.logger.info(
-                  'Message processed and deleted:',
-                  message.MessageId,
-                );
-            }),
-          );
-        }
+            this.logger.info(
+              'Message processed and deleted:',
+              message.MessageId,
+            );
+          }),
+        );
+      }
 
       await receiveMessages(); // Keep polling
     };

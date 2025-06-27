@@ -1,5 +1,3 @@
-import {SendMessageCommandInput} from '@aws-sdk/client-sqs';
-
 export interface Config {
   queueConfig: {
     QueueUrl: string;

@@ -19,8 +19,8 @@ export class BullMQConnector implements Component {
   services?: ServiceOrProviderClass[];
   providers?: ProviderMap;
   controllers?: ControllerClass[];
-  bindings?: Binding<any>[] | undefined;
-  lifeCycleObservers?: Constructor<LifeCycleObserver>[] | undefined;
+  bindings?: Binding<any>[];
+  lifeCycleObservers?: Constructor<LifeCycleObserver>[];
   constructor(
     @inject(BullMQBindings.Config, {optional: true})
     private readonly config: BullMQConfig,

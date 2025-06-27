@@ -15,7 +15,7 @@ export class EventBridgeConnector implements Component {
   services?: ServiceOrProviderClass[];
   providers?: ProviderMap;
   controllers?: ControllerClass[];
-  bindings?: Binding<any>[] | undefined;
+  bindings?: Binding<any>[];
 
   constructor() {
     this.bindings = [
@@ -26,7 +26,6 @@ export class EventBridgeConnector implements Component {
     this.providers = {
       [EventBridgeStreamBindings.Client.key]: EventBridgeClientProvider,
     };
-    // this.services = [EventBridgeProducerService];
 
     this.controllers = [EventController];
   }

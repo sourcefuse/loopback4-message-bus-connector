@@ -1,16 +1,27 @@
-import {expect, sinon} from '@loopback/testlab';
+import {sinon} from '@loopback/testlab';
 import {EventHandlerService} from '../../../services';
 import {ConsumerApp} from './fixtures/consumer-app';
 import {Events, TestStream} from '../test-stream';
 import {setupConsumerApplication} from './helpers/app-builder';
 import {QueueType} from '../../../types';
 import {QueueStub} from './stubs/bullmq-queue.stub';
+interface MockBullMQConsumerService {
+  start: sinon.SinonStub;
+  stop: sinon.SinonStub;
+  addWorker: sinon.SinonStub;
+  removeWorker: sinon.SinonStub;
+  autoScaler: sinon.SinonStub;
+  startAutoScaler: sinon.SinonStub;
+  processMessage: sinon.SinonStub;
+}
+
+let mockBullMQConsumerService: MockBullMQConsumerService;
 
 describe('EventHandlerService', () => {
   let consumerApp: ConsumerApp;
   let consumerStub: sinon.SinonStub;
   let handlerService: EventHandlerService<TestStream>;
-  let mockBullMQConsumerService: any;
+  let mockBullMQConsumerService: MockBullMQConsumerService;
 
   before(async () => {
     const queue = new QueueStub();
@@ -41,8 +52,10 @@ describe('EventHandlerService', () => {
   beforeEach(() => {
     consumerStub.reset();
     // Reset all mock stubs
-    Object.values(mockBullMQConsumerService).forEach((stub: any) => {
-      if (stub.reset) stub.reset();
+    Object.values(mockBullMQConsumerService).forEach(stub => {
+      if (typeof stub.reset === 'function') {
+        stub.reset();
+      }
     });
   });
 

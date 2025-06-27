@@ -1,9 +1,4 @@
-import {
-  inject,
-  lifeCycleObserver,
-  LifeCycleObserver,
-  service,
-} from '@loopback/core';
+import {inject, lifeCycleObserver, LifeCycleObserver} from '@loopback/core';
 import {ILogger, LOGGER} from '@sourceloop/core';
 import {BullMQConsumerService} from '../services/bullmq-consumer.service';
 import {BullMQBindings} from '../keys';

@@ -2,6 +2,7 @@ import {
   SendMessageBatchCommand,
   SendMessageBatchRequestEntry,
   SendMessageCommand,
+  SendMessageRequest,
   SQSClient,
 } from '@aws-sdk/client-sqs';
 import {BindingScope, inject, injectable} from '@loopback/core';
@@ -26,7 +27,7 @@ export class SqsProducerService implements Producer {
    * Sends a single message to the SQS queue.
    * @param data The message body and attributes.
    */
-  async send(data: any): Promise<void> {
+  async send(data: Omit<SendMessageRequest,'QueueUrl'>): Promise<void> {
 
       const command = new SendMessageCommand({
         ...this.sqsConfig.queueConfig,
@@ -46,7 +47,7 @@ export class SqsProducerService implements Producer {
 
       const entries: SendMessageBatchRequestEntry[] = data.map(
         (msg, index) => ({
-          Id: msg.id || `msg-${index}`,
+          Id: msg.id ?? `msg-${index}`,
           ...msg,
         }),
       );

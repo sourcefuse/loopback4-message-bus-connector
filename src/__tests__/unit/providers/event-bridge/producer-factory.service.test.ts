@@ -1,18 +1,15 @@
 import {expect, sinon} from '@loopback/testlab';
-import {
-  EventBridge,
-  EventBridgeClient,
-  PutEventsCommand,
-} from '@aws-sdk/client-eventbridge';
+import {EventBridgeClient, PutEventsCommand} from '@aws-sdk/client-eventbridge';
 import {EventBridgeStreamConfig} from '../../../../strategies';
 import {EventBridgeProducerService} from '../../../../strategies/event-bridge/services';
 describe('ProducerFactoryProvider', () => {
   let mockClient: sinon.SinonStubbedInstance<EventBridgeClient>;
   let producer: EventBridgeProducerService;
-
+  const source = 'test-source';
+  const eventBusName = 'test-bus';
   const mockConfig: EventBridgeStreamConfig = {
-    source: 'test-source',
-    eventBusName: 'test-bus',
+    source,
+    eventBusName,
   };
 
   beforeEach(() => {
@@ -36,13 +33,16 @@ describe('ProducerFactoryProvider', () => {
     expect(commandArg.input.Entries?.[0]).to.containDeep({
       Detail: JSON.stringify(data),
       DetailType: topic,
-      Source: 'test-source',
-      EventBusName: 'test-bus',
+      Source:source,
+      EventBusName:eventBusName,
     });
   });
 
   it('should send multiple events with correct parameters', async () => {
-    const data = [{msg: 'one',type: 'BatchEvent'}, {msg: 'two', type: 'BatchEvent'}];
+    const data = [
+      {msg: 'one', type: 'BatchEvent'},
+      {msg: 'two', type: 'BatchEvent'},
+    ];
     const topic = 'BatchEvent';
 
     await producer.sendMultiple(data);
@@ -54,14 +54,14 @@ describe('ProducerFactoryProvider', () => {
     expect(commandArg.input.Entries?.[0]).to.containDeep({
       Detail: JSON.stringify(data[0]),
       DetailType: topic,
-      Source: 'test-source',
-      EventBusName: 'test-bus',
+      Source:source,
+      EventBusName:eventBusName,
     });
     expect(commandArg.input.Entries?.[1]).to.containDeep({
       Detail: JSON.stringify(data[1]),
       DetailType: topic,
-      Source: 'test-source',
-      EventBusName: 'test-bus',
+      Source:source,
+      EventBusName:eventBusName,
     });
   });
 });

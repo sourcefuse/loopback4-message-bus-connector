@@ -78,23 +78,25 @@ export class BullMQConsumerService {
   private async removeWorker(): Promise<void> {
     const worker = this.workers.pop();
     if (worker) {
-        await worker.close();
+      await worker.close();
     }
   }
 
   private async autoScaler(): Promise<void> {
-
-      const waitingCount = await this.queue.getWaitingCount();
-      const currentWorkers = this.workers.length;
-      if (waitingCount >= currentWorkers && currentWorkers < this.maxWorkers) {
-        this.addWorker();
-      } else if (
-        waitingCount < currentWorkers &&
-        currentWorkers > this.minWorkers
-      ) {
-        await this.removeWorker();
-      }
-   
+    const waitingCount = await this.queue.getWaitingCount();
+    const currentWorkers = this.workers.length;
+    if (waitingCount >= currentWorkers && currentWorkers < this.maxWorkers) {
+      this.addWorker();
+    } else if (
+      waitingCount < currentWorkers &&
+      currentWorkers > this.minWorkers
+    ) {
+      await this.removeWorker();
+    } else {
+      this.logger.debug(
+        `AutoScaler: No scaling needed. Waiting count: ${waitingCount}, Current workers: ${currentWorkers}`,
+      );
+    }
   }
 
   private startAutoScaler(): void {
@@ -109,9 +111,7 @@ export class BullMQConsumerService {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private async processMessage(job: any): Promise<void> {
-
-      const {type, ...payload} = job.data;
-      await this.eventHandler.handle(type, payload, QueueType.BullMQ);
-    
+    const {type, ...payload} = job.data;
+    await this.eventHandler.handle(type, payload, QueueType.BullMQ);
   }
 }

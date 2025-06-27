@@ -11,8 +11,9 @@ import {EventHandlerService} from '../../../../services';
 import {QueueType} from '../../../../types';
 import proxyquire from 'proxyquire';
 
+const HIGH_WAITING_JOB_COUNT=5;
 // Mock bullmq Worker instances
-const mockWorkerInstances: any[] = [];
+const mockWorkerInstances: MockWorker[] = [];
 
 // Create a mock Worker class
 class MockWorker {
@@ -143,7 +144,7 @@ describe('BullMQConsumerProvider', () => {
   });
 
   it('handles auto-scaling up when queue has more messages', async () => {
-    queueStub.stubs.getWaitingCount.resolves(5);
+    queueStub.stubs.getWaitingCount.resolves(HIGH_WAITING_JOB_COUNT);
     await consumer['autoScaler']();
     // Verify worker count increased
     expect(consumer['workers'].length).to.be.greaterThan(0);

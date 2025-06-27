@@ -31,7 +31,6 @@ export class BullMQProducerService implements Producer {
     };
   }): Promise<void> {
     await this.queue.add(data.name, data.data, data.options);
-    return;
   }
 
   async sendMultiple(

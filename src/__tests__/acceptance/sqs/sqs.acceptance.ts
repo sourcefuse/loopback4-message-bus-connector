@@ -1,10 +1,9 @@
-import {expect, sinon} from '@loopback/testlab';
+import {sinon} from '@loopback/testlab';
 import {ProducerApp} from './fixtures/producers-app';
 import {TestProducerService} from './fixtures/services/test-producer.service';
 import {setupProducerApplication} from './helpers/app-builder';
 import {Events} from '../test-stream';
-import {DEFAULT_SOURCE} from '../../../constants';
-import { SQSClientStub } from './stubs/sqs-client.stub';
+import {SQSClientStub} from './stubs/sqs-client.stub';
 
 [
   {
@@ -30,7 +29,6 @@ import { SQSClientStub } from './stubs/sqs-client.stub';
       producerService = producerApp.getSync<TestProducerService>(
         `services.TestProducerService`,
       );
-
     });
     beforeEach(() => {
       listenerStub.reset();
@@ -42,40 +40,51 @@ import { SQSClientStub } from './stubs/sqs-client.stub';
       it('should produce an event for a particular topic', async () => {
         const data = {
           MessageBody: JSON.stringify({tenantId: '123', action: 'delete'}),
-          MessageAttributes:{
-             EventType: {
-                 DataType: 'String',
-                 StringValue: Events.A,
-               },
-          }
-        }
+          MessageAttributes: {
+            EventType: {
+              DataType: 'String',
+              StringValue: Events.A,
+            },
+          },
+        };
         await producerService.produceEventA(data);
-        sinon.assert.calledWithExactly(listenerStub,'type A', "Source A", data);
+        sinon.assert.calledWithExactly(
+          listenerStub,
+          'type A',
+          'Source A',
+          data,
+        );
       });
       it('should produce multiple events for a particular topic', async () => {
-        const data = [{
-          Id:'1',
-          MessageBody: JSON.stringify({tenantId: '123', action: 'delete'}),
-          MessageAttributes:{
-             EventType: {
-                 DataType: 'String',
-                 StringValue: Events.A,
-               },
-          }
-        },
-        {
-          Id:'2',
-          MessageBody: JSON.stringify({tenantId: '456', action: 'delete'}),
-          MessageAttributes:{
-             EventType: {
-                 DataType: 'String',
-                 StringValue: Events.B,
-               },
-          }
-        }];
+        const data = [
+          {
+            Id: '1',
+            MessageBody: JSON.stringify({tenantId: '123', action: 'delete'}),
+            MessageAttributes: {
+              EventType: {
+                DataType: 'String',
+                StringValue: Events.A,
+              },
+            },
+          },
+          {
+            Id: '2',
+            MessageBody: JSON.stringify({tenantId: '456', action: 'delete'}),
+            MessageAttributes: {
+              EventType: {
+                DataType: 'String',
+                StringValue: Events.B,
+              },
+            },
+          },
+        ];
         await producerService.produceMultipleA(data);
-        sinon.assert.calledWithExactly(listenerStub,'type A', "Source A", data);
-      
+        sinon.assert.calledWithExactly(
+          listenerStub,
+          'type A',
+          'Source A',
+          data,
+        );
       });
     });
   });
