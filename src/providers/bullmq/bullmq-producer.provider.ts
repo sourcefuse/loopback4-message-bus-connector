@@ -29,8 +29,7 @@ export class BullMQProducerProvider implements Provider<BullMQProducer> {
     // Initialize the BullMQ queue
     this.queue = new Queue(this.bullConfig.QueueName, {
       connection: this.bullConfig.redisConfig,
-
-      ...this.bullConfig.producerConfig?.defaultJobOptions,
+      defaultJobOptions: this.bullConfig.producerConfig?.defaultJobOptions,
     });
   }
 
