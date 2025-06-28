@@ -4,13 +4,12 @@ import {
   sinon,
   StubbedInstanceWithSinonAccessor,
 } from '@loopback/testlab';
-import {Queue} from 'bullmq';
 import {ILogger} from '@sourceloop/core';
 import {BullMQConfig} from '../../../../strategies';
 import {EventHandlerService} from '../../../../services';
 import {QueueType} from '../../../../types';
 import proxyquire from 'proxyquire';
-import {WorkerOptions, Processor} from 'bullmq';
+import {WorkerOptions, Processor, Queue} from 'bullmq';
 
 const HIGH_WAITING_JOB_COUNT = 5;
 // Mock bullmq Worker instances
