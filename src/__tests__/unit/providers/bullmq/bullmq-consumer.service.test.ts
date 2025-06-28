@@ -10,20 +10,21 @@ import {BullMQConfig} from '../../../../strategies';
 import {EventHandlerService} from '../../../../services';
 import {QueueType} from '../../../../types';
 import proxyquire from 'proxyquire';
+import {WorkerOptions, Processor} from 'bullmq';
 
-const HIGH_WAITING_JOB_COUNT=5;
+const HIGH_WAITING_JOB_COUNT = 5;
 // Mock bullmq Worker instances
 const mockWorkerInstances: MockWorker[] = [];
 
 // Create a mock Worker class
 class MockWorker {
   public name: string;
-  public opts: any;
+  public opts: WorkerOptions;
   public on: sinon.SinonStub;
   public close: sinon.SinonStub;
   public removeAllListeners: sinon.SinonStub;
 
-  constructor(queueName: string, processor: any, opts: any) {
+  constructor(queueName: string, processor: Processor, opts: WorkerOptions) {
     this.name = queueName;
     this.opts = opts;
     this.on = sinon.stub();
@@ -48,7 +49,7 @@ const BullMQConsumerService = proxyquire(
 ).BullMQConsumerService;
 
 describe('BullMQConsumerProvider', () => {
-  let consumer: any;
+  let consumer: InstanceType<typeof BullMQConsumerService>;
   let queueStub: StubbedInstanceWithSinonAccessor<Queue>;
   let eventHandlerStub: StubbedInstanceWithSinonAccessor<EventHandlerService>;
   let loggerStub: ILogger;

@@ -91,7 +91,6 @@ describe('SQSProducerProvider', () => {
     );
   });
 
-
   it('should log partial failures on sendMultiple()', async () => {
     sendStub.resolves({
       Successful: [],

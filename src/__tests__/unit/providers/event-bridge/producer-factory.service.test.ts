@@ -33,8 +33,8 @@ describe('ProducerFactoryProvider', () => {
     expect(commandArg.input.Entries?.[0]).to.containDeep({
       Detail: JSON.stringify(data),
       DetailType: topic,
-      Source:source,
-      EventBusName:eventBusName,
+      Source: source,
+      EventBusName: eventBusName,
     });
   });
 
@@ -54,14 +54,14 @@ describe('ProducerFactoryProvider', () => {
     expect(commandArg.input.Entries?.[0]).to.containDeep({
       Detail: JSON.stringify(data[0]),
       DetailType: topic,
-      Source:source,
-      EventBusName:eventBusName,
+      Source: source,
+      EventBusName: eventBusName,
     });
     expect(commandArg.input.Entries?.[1]).to.containDeep({
       Detail: JSON.stringify(data[1]),
       DetailType: topic,
-      Source:source,
-      EventBusName:eventBusName,
+      Source: source,
+      EventBusName: eventBusName,
     });
   });
 });

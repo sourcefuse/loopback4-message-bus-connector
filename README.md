@@ -12,6 +12,7 @@ Install EventStreamConnectorComponent using `npm`;
 ```sh
 $ [npm install | yarn add] @sourceloop/message-bus-queue-connectors
 ```
+
 ## Flow Diagram
 
 <img width="659" alt="Screenshot 2025-06-06 at 10 53 06 AM" src="https://github.com/user-attachments/assets/baf1bcaa-5f67-44bb-a01a-b8d1c41644bc" />
@@ -22,9 +23,7 @@ Configure and load EventStreamConnectorComponent in the application constructor
 as shown below.
 
 ```ts
-import {
-  EventStreamConnectorComponent
-} from '@sourceloop/message-bus-queue-connectors';
+import {EventStreamConnectorComponent} from '@sourceloop/message-bus-queue-connectors';
 
 // ...
 export class MyApplication extends BootMixin(
@@ -47,7 +46,7 @@ To use SQS as their message queue, bind its required config and connector compon
 import {
   SQSConnector,
   SQSBindings,
-  EventStreamConnectorComponent
+  EventStreamConnectorComponent,
 } from '@sourceloop/message-bus-queue-connectors';
 
 // ...
@@ -156,10 +155,10 @@ const config = {
 
 ## Integration
 
- @sourceloop/message-bus-queue-connectors provides a decorator '@producer()' that can be used to access the producer of each msg queue. It expects one arguement defining the type of queue, of which producer u want to use. like
+@sourceloop/message-bus-queue-connectors provides a decorator '@producer()' that can be used to access the producer of each msg queue. It expects one arguement defining the type of queue, of which producer u want to use. like
 
- ```ts 
- @injectable({scope: BindingScope.TRANSIENT})
+```ts
+@injectable({scope: BindingScope.TRANSIENT})
 export class EventConnector implements IEventConnector<PublishedEvents> {
   constructor(
     @producer(QueueType.EventBridge)
@@ -171,30 +170,38 @@ export class EventConnector implements IEventConnector<PublishedEvents> {
   ) {}
 
   // rest of implementation
-
 }
- ```
+```
 
- Producer provider two ways of sending events - single event at a time and multiple event at a time.
+Producer provider two ways of sending events - single event at a time and multiple event at a time.
 
- ```ts
- export type Producer<Stream extends AnyObject = AnyObject> = {
-    send: <Event extends keyof Stream>(data: Stream[Event], topic?: Event) => Promise<void>;
-    sendMultiple: <Event extends keyof Stream>(data: Stream[Event][], topic?: Event) => Promise<void>;
+```ts
+export type Producer<Stream extends AnyObject = AnyObject> = {
+  send: <Event extends keyof Stream>(
+    data: Stream[Event],
+    topic?: Event,
+  ) => Promise<void>;
+  sendMultiple: <Event extends keyof Stream>(
+    data: Stream[Event][],
+    topic?: Event,
+  ) => Promise<void>;
 };
- ```
+```
 
 It provides '@consumer' decorator to make a service as consumer. consumer needs to follow an interface.
 
 ```ts
-export interface IConsumer<Stream extends AnyObject, Event extends keyof Stream> {
-    event: Event;
-    queue: QueueType;
-    handle(data: Stream[Event]): Promise<void>;
+export interface IConsumer<
+  Stream extends AnyObject,
+  Event extends keyof Stream,
+> {
+  event: Event;
+  queue: QueueType;
+  handle(data: Stream[Event]): Promise<void>;
 }
 ```
 
-and can be used as 
+and can be used as
 
 ```ts
 import {
@@ -202,17 +209,16 @@ import {
   QueueType,
   consumer,
 } from '@sourceloop/message-bus-queue-connectors';
-import { OrchestratorStream, EventTypes, ProvisioningInputs } from '../../types';
+import {OrchestratorStream, EventTypes, ProvisioningInputs} from '../../types';
 
 @consumer
 export class TenantProvisioningConsumerForEventSQS
   implements IConsumer<OrchestratorStream, EventTypes.TENANT_PROVISIONING>
 {
-  constructor(
-  ) {}
+  constructor() {}
   event: EventTypes.TENANT_PROVISIONING = EventTypes.TENANT_PROVISIONING;
   queue: QueueType = QueueType.SQS;
-  async handle(data: ProvisioningInputs): Promise<void> {    
+  async handle(data: ProvisioningInputs): Promise<void> {
     console.log(`SQS: ${this.event} Event Recieved ` + JSON.stringify(data));
     return;
   }

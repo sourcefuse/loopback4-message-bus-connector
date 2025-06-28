@@ -3,10 +3,7 @@ import {ApplicationConfig} from '@loopback/core';
 import {RestApplication} from '@loopback/rest';
 import {ServiceMixin} from '@loopback/service-proxy';
 import {EventStreamConnectorComponent} from '../../../../component';
-import {
-  BullMQBindings,
-  BullMQConnector,
-} from '../../../../strategies';
+import {BullMQBindings, BullMQConnector} from '../../../../strategies';
 
 export class ProducerApp extends BootMixin(ServiceMixin(RestApplication)) {
   constructor(options: ApplicationConfig = {}) {

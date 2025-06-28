@@ -44,7 +44,7 @@ import {DEFAULT_SOURCE} from '../../../constants';
         sinon.assert.calledWithExactly(listenerStub, Events.A, DEFAULT_SOURCE, {
           name: 'Event A',
           data: 'test string',
-          type: Events.A
+          type: Events.A,
         });
       });
       it('should produce multiple events for a particular topic', async () => {
@@ -57,12 +57,12 @@ import {DEFAULT_SOURCE} from '../../../constants';
         sinon.assert.calledWithExactly(calls[0], Events.A, DEFAULT_SOURCE, {
           name: 'Event A',
           data: 'test string 1',
-          type: Events.A
+          type: Events.A,
         });
         sinon.assert.calledWithExactly(calls[1], Events.A, DEFAULT_SOURCE, {
           name: 'Event A',
           data: 'test string 2',
-          type: Events.A
+          type: Events.A,
         });
       });
     });

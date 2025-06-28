@@ -15,7 +15,7 @@ export class EventBridgeConnector implements Component {
   services?: ServiceOrProviderClass[];
   providers?: ProviderMap;
   controllers?: ControllerClass[];
-  bindings?: Binding<any>[];
+  bindings?: Binding[];
 
   constructor() {
     this.bindings = [

@@ -53,9 +53,7 @@ export class EventController {
     })
     body: AnyObject,
   ): Promise<object> {
-
-      await this.eventHandler.handle(eventType, body, QueueType.EventBridge);
-      return {success: true};
-    
+    await this.eventHandler.handle(eventType, body, QueueType.EventBridge);
+    return {success: true};
   }
 }

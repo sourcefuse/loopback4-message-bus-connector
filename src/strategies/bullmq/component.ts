@@ -19,7 +19,7 @@ export class BullMQConnector implements Component {
   services?: ServiceOrProviderClass[];
   providers?: ProviderMap;
   controllers?: ControllerClass[];
-  bindings?: Binding<any>[];
+  bindings?: Binding[];
   lifeCycleObservers?: Constructor<LifeCycleObserver>[];
   constructor(
     @inject(BullMQBindings.Config, {optional: true})

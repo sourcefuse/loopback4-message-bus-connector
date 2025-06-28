@@ -1,4 +1,4 @@
-import {givenHttpServerConfig,sinon} from '@loopback/testlab';
+import {givenHttpServerConfig, sinon} from '@loopback/testlab';
 import {ProducerApp} from '../fixtures/producers-app';
 import {BullMQBindings} from '../../../../strategies';
 import {ConsumerApp} from '../fixtures/consumer-app';

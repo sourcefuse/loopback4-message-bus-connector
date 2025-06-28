@@ -20,7 +20,7 @@ export class SQSConnector implements Component {
   providers?: ProviderMap;
   controllers?: ControllerClass[];
   lifeCycleObservers?: Constructor<LifeCycleObserver>[];
-  bindings?: Binding<any>[];
+  bindings?: Binding[];
 
   constructor(
     @inject(SQSBindings.Config, {optional: true})

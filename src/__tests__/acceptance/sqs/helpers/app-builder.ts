@@ -2,7 +2,7 @@ import {givenHttpServerConfig} from '@loopback/testlab';
 import {ProducerApp} from '../fixtures/producers-app';
 import {SQSBindings} from '../../../../strategies';
 import {ConsumerApp} from '../fixtures/consumer-app';
-import { SQSClient } from '@aws-sdk/client-sqs';
+import {SQSClient} from '@aws-sdk/client-sqs';
 
 export async function setupProducerApplication(
   client?: unknown,

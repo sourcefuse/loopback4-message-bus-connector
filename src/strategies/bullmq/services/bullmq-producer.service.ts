@@ -44,8 +44,6 @@ export class BullMQProducerService implements Producer {
       };
     }>,
   ): Promise<void> {
-
-      await this.queue.addBulk(data);
-
+    await this.queue.addBulk(data);
   }
 }

@@ -4,10 +4,7 @@ import {ApplicationConfig} from '@loopback/core';
 import {RestApplication} from '@loopback/rest';
 import {ServiceMixin} from '@loopback/service-proxy';
 import {EventStreamConnectorComponent} from '../../../../component';
-import {
-  BullMQBindings,
-  BullMQConnector,
-} from '../../../../strategies';
+import {BullMQBindings, BullMQConnector} from '../../../../strategies';
 import {EventAConsumer} from './services/event-a.consumer';
 import {EventBConsumer} from './services/event-b.consumer';
 import {EventBSecondConsumer} from './services/event-b-second.consumer';

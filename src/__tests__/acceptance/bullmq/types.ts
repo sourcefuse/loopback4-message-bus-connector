@@ -6,7 +6,6 @@ export type StubListener = (
   data: AnyObject,
 ) => void;
 
-
 export interface BullMqQueueParams {
   name: string;
   data: Record<string, unknown>;

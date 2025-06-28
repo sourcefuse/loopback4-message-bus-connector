@@ -1,3 +1,5 @@
+import {SendMessageBatchRequestEntry} from '@aws-sdk/client-sqs';
+
 export interface Config {
   queueConfig: {
     QueueUrl: string;
@@ -28,3 +30,8 @@ export interface Config {
   };
   isConsumer?: boolean;
 }
+
+export type PartialSendMessageBatchRequestEntry = Omit<
+  SendMessageBatchRequestEntry,
+  'Id'
+> & {id?: string};
