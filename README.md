@@ -39,7 +39,7 @@ This is a LoopBack 4 extension for adding message queue-based communication to y
 - [EventBridge](/src/strategies/event-bridge) - Allows sending events to AWS EventBridge with support for event buses and schemas. Provides the HTTPS endpoint for receiving events.
 
 🧩 **Core Features**
-- Component Based Approach
+- **Component Based Approach**
 Central registry for queue components, enabling multi-queue usage in a single application.
 
 - **@producer()** Decorator
