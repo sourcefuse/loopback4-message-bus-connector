@@ -42,19 +42,19 @@ This is a LoopBack 4 extension for adding message queue-based communication to y
 - Component Based Approach
 Central registry for queue components, enabling multi-queue usage in a single application.
 
-- @producer() Decorator
+- **@producer()** Decorator
 Injects a producer for sending single or multiple typed events to any configured queue.
 
-- @consumer Decorator
+- **@consumer** Decorator
 Registers a service class as a consumer for a specific event and queue, handling messages automatically.
 
-- IProducer Interface
+- **IProducer** Interface
 Exposes send() and sendMultiple() methods to send messages to queues.
 
-- IConsumer Interface
+- **IConsumer** Interface
 Allows you to implement a handler for a specific event type and queue, supporting strongly typed data flow.
 
-- Typed Event Streams
+- **Typed Event Streams**
 Encourages defining typed contracts for all events, improving consistency and type safety between producers and consumers.
 
 You can configure one or more of the supported queue types in your application. For each, you simply provide the required connection and queue configuration. The rest—producer/consumer setup, bindings, and event handling—is abstracted and managed by the extension.
@@ -72,7 +72,7 @@ $ [npm install | yarn add] loopback4-message-queue-connector
 ```
 ## Flow Diagram
 
-<img width="659" alt="Screenshot 2025-06-06 at 10 53 06 AM" src="https://github.com/user-attachments/assets/baf1bcaa-5f67-44bb-a01a-b8d1c41644bc" />
+![screencapture-kzmkc5owuvsij9sl8eox-lite-vusercontent-net-2025-06-29-09_06_14](https://github.com/user-attachments/assets/3084cf3c-fbc2-4059-be30-8baa9dd07621)
 
 ## Basic Use
 
