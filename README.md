@@ -59,10 +59,6 @@ Encourages defining typed contracts for all events, improving consistency and ty
 
 You can configure one or more of the supported queue types in your application. For each, you simply provide the required connection and queue configuration. The rest—producer/consumer setup, bindings, and event handling—is abstracted and managed by the extension.
 
-
-
-[![LoopBack](<https://github.com/loopbackio/loopback-next/raw/master/docs/site/imgs/branding/Powered-by-LoopBack-Badge-(blue)-@2x.png>)](http://loopback.io/)
-
 ## Installation
 
 Install EventStreamConnectorComponent using `npm`;
