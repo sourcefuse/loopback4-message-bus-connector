@@ -1,8 +1,8 @@
-## Release [<%= range.split('..')[1] %>](https://github.com/sourcefuse/loopback4-message-bus-queue-connector/compare/<%= range %>) <%= new Date().toLocaleDateString('en-us', {year:"numeric", month:"long", day:"numeric"})
+## Release [<%= range.split('..')[1] %>](https://github.com/sourcefuse/loopback4-message-queue-connector/compare/<%= range %>) <%= new Date().toLocaleDateString('en-us', {year:"numeric", month:"long", day:"numeric"})
 ;%>
-Welcome to the <%= new Date().toLocaleDateString('en-us', {year:"numeric", month:"long", day:"numeric"});%> release of loopback4-message-bus-queue-connector. There are many updates in this version that we hope you will like, the key highlights include:
+Welcome to the <%= new Date().toLocaleDateString('en-us', {year:"numeric", month:"long", day:"numeric"});%> release of loopback4-message-queue-connector. There are many updates in this version that we hope you will like, the key highlights include:
 <% commits.forEach(function (commit) { %>
-  - [<%= commit.issueTitle %>](https://github.com/sourcefuse/loopback4-message-bus-queue-connector/issues/<%= commit.issueno %>) :- [<%= commit.title %>](https://github.com/sourcefuse/loopback4-message-bus-queue-connector/commit/<%= commit.sha1%>) was commited on <%= commit.committerDate %> by [<%= commit.authorName %>](mailto:<%= commit.authorEmail %>)
+  - [<%= commit.issueTitle %>](https://github.com/sourcefuse/loopback4-message-queue-connector/issues/<%= commit.issueno %>) :- [<%= commit.title %>](https://github.com/sourcefuse/loopback4-message-queue-connector/commit/<%= commit.sha1%>) was commited on <%= commit.committerDate %> by [<%= commit.authorName %>](mailto:<%= commit.authorEmail %>)
     <% commit.messageLines.forEach(function (message) { %>
       - <%= message %>
       <% }) %>

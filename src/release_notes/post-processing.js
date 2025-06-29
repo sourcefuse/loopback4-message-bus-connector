@@ -45,7 +45,7 @@ function getIssueDesc(issueNo) {
   return new Promise((resolve, reject) => {
     let result = '';
     const req = https.get(
-      `https://github.com/sourcefuse/loopback4-message-bus-queue-connector/issues/${encodeURIComponent(
+      `https://github.com/sourcefuse/loopback4-message-queue-connector/issues/${encodeURIComponent(
         issueNo,
       )}`,
       res => {
