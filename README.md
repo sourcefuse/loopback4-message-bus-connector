@@ -30,15 +30,15 @@
 
 This is a LoopBack 4 extension for adding message queue-based communication to your LoopBack applications. It provides a unified and extensible interface for working with different queuing systems.
 
-✅ Supported Queue Connectors
+✅ **Supported Queue Connectors**
 
-- SQSConnector – Integrates with AWS SQS using @aws-sdk/client-sqs. Supports both message sending and consumption with polling, visibility timeout, etc.
+- [SQSConnector](/src/strategies/sqs) – Integrates with AWS SQS using @aws-sdk/client-sqs. Supports both message sending and consumption with polling, visibility timeout, etc.
 
-- BullMQConnector – Integrates with BullMQ (Redis-based queue). Supports advanced job options like retries, backoff, consumer concurrency, and job polling.
+- [BullMQConnector](/src/strategies/bullmq) – Integrates with BullMQ (Redis-based queue). Supports advanced job options like retries, backoff, consumer concurrency, and job polling.
 
-- EventBridge - Allows sending events to AWS EventBridge with support for event buses and schemas. Provides the HTTPS endpoint for receiving events.
+- [EventBridge](/src/strategies/event-bridge) - Allows sending events to AWS EventBridge with support for event buses and schemas. Provides the HTTPS endpoint for receiving events.
 
-🧩 Core Features
+🧩 **Core Features**
 - Component Based Approach
 Central registry for queue components, enabling multi-queue usage in a single application.
 
