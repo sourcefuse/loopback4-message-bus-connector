@@ -1,7 +1,7 @@
 {
-  "name": "@sourceloop/message-bus-queue-connectors",
+  "name": "loopback4-message-queue-connector",
   "version": "0.0.1",
-  "description": "message-bus-queue-connectors",
+  "description": "loopback4-message-queue-connectors",
   "keywords": [
     "loopback-extension",
     "loopback"
