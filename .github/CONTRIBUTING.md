@@ -1,4 +1,4 @@
-# loopback4-message-queue-connector
+# loopback4-message-bus-connector
 
 ## Contributing
 
@@ -6,9 +6,9 @@ First off, thank you for considering contributing to the project. It's people li
 
 ### Where do I go from here?
 
-If you've noticed a bug or have a question, [search the issue tracker](https://github.com/sourcefuse/loopback4-message-queue-connector/issues) to see if
+If you've noticed a bug or have a question, [search the issue tracker](https://github.com/sourcefuse/loopback4-message-bus-connector/issues) to see if
 someone else in the community has already created a ticket. If not, go ahead and
-[make one](https://github.com/sourcefuse/loopback4-message-queue-connector/issues/new/choose)!
+[make one](https://github.com/sourcefuse/loopback4-message-bus-connector/issues/new/choose)!
 
 ### Fork & create a branch
 
@@ -24,10 +24,10 @@ git checkout -b 325-add-new-feature
 ### Make a Pull Request
 
 At this point, you should switch back to your master branch and make sure it's
-up to date with loopback4-message-queue-connector's master branch:
+up to date with loopback4-message-bus-connector's master branch:
 
 ```sh
-git remote add upstream git@github.com:sourcefuse/loopback4-message-queue-connector.git
+git remote add upstream git@github.com:sourcefuse/loopback4-message-bus-connector.git
 git checkout master
 git pull upstream master
 ```

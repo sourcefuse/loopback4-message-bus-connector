@@ -1,7 +1,7 @@
 {
-  "name": "loopback4-message-queue-connector",
+  "name": "loopback4-message-bus-connector",
   "version": "0.0.1",
-  "description": "loopback4-message-queue-connectors",
+  "description": "loopback4-message-bus-connectors",
   "keywords": [
     "loopback-extension",
     "loopback"
@@ -158,6 +158,6 @@
       ],
       "@semantic-release/github"
     ],
-    "repositoryUrl": "git@github.com:sourcefuse/loopback4-message-queue-connector.git"
+    "repositoryUrl": "git@github.com:sourcefuse/loopback4-message-bus-connector.git"
   }
 }

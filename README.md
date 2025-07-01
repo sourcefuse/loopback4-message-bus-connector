@@ -1,25 +1,25 @@
 <a href="https://sourcefuse.github.io/arc-docs/arc-api-docs" target="_blank"><img src="https://github.com/sourcefuse/loopback4-microservice-catalog/blob/master/docs/assets/logo-dark-bg.png?raw=true" alt="ARC By SourceFuse logo" title="ARC By SourceFuse" align="right" width="150" /></a>
 
-# [loopback4-message-queue-connector](https://github.com/sourcefuse/loopback4-message-queue-connector)
+# [loopback4-message-bus-connector](https://github.com/sourcefuse/loopback4-message-bus-connector)
 
 <p align="left">
-<a href="https://www.npmjs.com/package/loopback4-message-queue-connector">
-<img src="https://img.shields.io/npm/v/loopback4-message-queue-connector.svg" alt="npm version" />
+<a href="https://www.npmjs.com/package/loopback4-message-bus-connector">
+<img src="https://img.shields.io/npm/v/loopback4-message-bus-connector.svg" alt="npm version" />
 </a>
-<a href="https://sonarcloud.io/summary/new_code?id=sourcefuse_loopback4-message-queue-connector" target="_blank">
-<img alt="Sonar Quality Gate" src="https://img.shields.io/sonar/quality_gate/sourcefuse_loopback4-message-queue-connector?server=https%3A%2F%2Fsonarcloud.io">
+<a href="https://sonarcloud.io/summary/new_code?id=sourcefuse_loopback4-message-bus-connector" target="_blank">
+<img alt="Sonar Quality Gate" src="https://img.shields.io/sonar/quality_gate/sourcefuse_loopback4-message-bus-connector?server=https%3A%2F%2Fsonarcloud.io">
 </a>
-<a href="https://app.snyk.io/org/ashishkaushik/reporting?context[page]=issues-detail&project_target=%255B%2522sourcefuse%252Floopback4-message-queue-connector%2522%255D&project_origin=%255B%2522github%2522%255D&issue_status=%255B%2522Open%2522%255D&issue_by=Severity&table_issues_detail_cols=SCORE%257CCVE%257CCWE%257CPROJECT%257CEXPLOIT%2520MATURITY%257CAUTO%2520FIXABLE%257CINTRODUCED%257CSNYK%2520PRODUCT&v=1">
+<a href="https://app.snyk.io/org/ashishkaushik/reporting?context[page]=issues-detail&project_target=%255B%2522sourcefuse%252Floopback4-message-bus-connector%2522%255D&project_origin=%255B%2522github%2522%255D&issue_status=%255B%2522Open%2522%255D&issue_by=Severity&table_issues_detail_cols=SCORE%257CCVE%257CCWE%257CPROJECT%257CEXPLOIT%2520MATURITY%257CAUTO%2520FIXABLE%257CINTRODUCED%257CSNYK%2520PRODUCT&v=1">
 <img alt="Synk Status" src="https://img.shields.io/badge/SYNK_SECURITY-MONITORED-GREEN">
 </a>
-<a href="https://github.com/sourcefuse/loopback4-message-queue-connector/graphs/contributors" target="_blank">
-<img alt="GitHub contributors" src="https://img.shields.io/github/contributors/sourcefuse/loopback4-message-queue-connector?">
+<a href="https://github.com/sourcefuse/loopback4-message-bus-connector/graphs/contributors" target="_blank">
+<img alt="GitHub contributors" src="https://img.shields.io/github/contributors/sourcefuse/loopback4-message-bus-connector?">
 </a>
-<a href="https://www.npmjs.com/package/loopback4-message-queue-connector" target="_blank">
-<img alt="downloads" src="https://img.shields.io/npm/dw/loopback4-message-queue-connector.svg">
+<a href="https://www.npmjs.com/package/loopback4-message-bus-connector" target="_blank">
+<img alt="downloads" src="https://img.shields.io/npm/dw/loopback4-message-bus-connector.svg">
 </a>
-<a href="https://github.com/sourcefuse/loopback4-message-queue-connector/blob/master/LICENSE">
-<img src="https://img.shields.io/github/license/sourcefuse/loopback4-message-queue-connector.svg" alt="License" />
+<a href="https://github.com/sourcefuse/loopback4-message-bus-connector/blob/master/LICENSE">
+<img src="https://img.shields.io/github/license/sourcefuse/loopback4-message-bus-connector.svg" alt="License" />
 </a>
 <a href="https://loopback.io/" target="_blank">
 <img alt="Powered By LoopBack 4" src="https://img.shields.io/badge/Powered%20by-LoopBack 4-brightgreen" />
@@ -28,9 +28,9 @@
 
 # Overview
 
-This is a LoopBack 4 extension for adding message queue-based communication to your LoopBack applications. It provides a unified and extensible interface for working with different queuing systems.
+This is a LoopBack 4 extension for adding message queue and event based communication to your LoopBack applications. It provides a unified and extensible interface for working with different queuing systems.
 
-✅ **Supported Queue Connectors**
+✅ **Supported Connectors**
 
 - [SQSConnector](/src/strategies/sqs) – Integrates with AWS SQS using @aws-sdk/client-sqs. Supports both message sending and consumption with polling, visibility timeout, etc.
 
@@ -40,19 +40,19 @@ This is a LoopBack 4 extension for adding message queue-based communication to y
 
 🧩 **Core Features**
 - **Component Based Approach**
-Central registry for queue components, enabling multi-queue usage in a single application.
+Central registry for components, enabling multi-bus usage in a single application.
 
 - **@producer()** Decorator
-Injects a producer for sending single or multiple typed events to any configured queue.
+Injects a producer for sending single or multiple typed events to any configured bus.
 
 - **@consumer** Decorator
 Registers a service class as a consumer for a specific event and queue, handling messages automatically.
 
 - **IProducer** Interface
-Exposes send() and sendMultiple() methods to send messages to queues.
+Exposes send() and sendMultiple() methods to send messages to buses.
 
 - **IConsumer** Interface
-Allows you to implement a handler for a specific event type and queue, supporting strongly typed data flow.
+Allows you to implement a handler for a specific event type and bus, supporting strongly typed data flow.
 
 - **Typed Event Streams**
 Encourages defining typed contracts for all events, improving consistency and type safety between producers and consumers.
@@ -64,7 +64,7 @@ You can configure one or more of the supported queue types in your application. 
 Install EventStreamConnectorComponent using `npm`;
 
 ```sh
-$ [npm install | yarn add] loopback4-message-queue-connector
+$ [npm install | yarn add] loopback4-message-bus-connector
 ```
 ## Flow Diagram
 
@@ -78,7 +78,7 @@ as shown below.
 ```ts
 import {
   EventStreamConnectorComponent
-} from 'loopback4-message-queue-connector';
+} from 'loopback4-message-bus-connector';
 
 // ...
 export class MyApplication extends BootMixin(
@@ -102,7 +102,7 @@ import {
   SQSConnector,
   SQSBindings,
   EventStreamConnectorComponent
-} from 'loopback4-message-queue-connector';
+} from 'loopback4-message-bus-connector';
 
 // ...
 export class MyApplication extends BootMixin(
@@ -161,7 +161,7 @@ import {
   BullMQConnector,
   BullMQBindings,
   EventStreamConnectorComponent,
-} from 'loopback4-message-queue-connector';
+} from 'loopback4-message-bus-connector';
 
 // ...
 export class MyApplication extends BootMixin(
@@ -210,7 +210,7 @@ const config = {
 
 ## Integration
 
- loopback4-message-queue-connector provides a decorator '@producer()' that can be used to access the producer of each msg queue. It expects one arguement defining the type of queue, of which producer u want to use. like
+ loopback4-message-bus-connector provides a decorator '@producer()' that can be used to access the producer of each msg queue. It expects one arguement defining the type of queue, of which producer u want to use. like
 
  ```ts 
  @injectable({scope: BindingScope.TRANSIENT})
@@ -255,7 +255,7 @@ import {
   IConsumer,
   QueueType,
   consumer,
-} from 'loopback4-message-queue-connector';
+} from 'loopback4-message-bus-connector';
 import { OrchestratorStream, EventTypes, ProvisioningInputs } from '../../types';
 
 @consumer
