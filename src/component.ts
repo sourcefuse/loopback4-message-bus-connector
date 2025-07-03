@@ -1,21 +1,35 @@
-import {QueueBindings} from './keys';
+import {
+  Application,
+  injectable,
+  Component,
+  config,
+  ContextTags,
+  CoreBindings,
+  inject,
+  ServiceOrProviderClass,
+} from '@loopback/core';
+import {EventStreamConnectorComponentBindings} from './keys';
+import {LoggerExtensionComponent} from '@sourceloop/core';
+import {
+  DEFAULT_EVENT_STREAM_CONNECTOR_OPTIONS,
+  EventStreamConnectorComponentOptions,
+} from './types';
+import {EventHandlerService} from './services';
 
-import {SQSBindings} from './providers/sqs/keys';
-import {QueueProducerProvider} from './providers/queue-producer-provider';
-import {Binding, Component, ProviderMap} from '@loopback/core';
-import {BullMQBindings} from './providers/bullmq';
+// Configure the binding for EventStreamConnectorComponent
+@injectable({
+  tags: {[ContextTags.KEY]: EventStreamConnectorComponentBindings.COMPONENT},
+})
+export class EventStreamConnectorComponent implements Component {
+  services?: ServiceOrProviderClass[];
+  constructor(
+    @inject(CoreBindings.APPLICATION_INSTANCE)
+    private app: Application,
+    @config()
+    private options: EventStreamConnectorComponentOptions = DEFAULT_EVENT_STREAM_CONNECTOR_OPTIONS,
+  ) {
+    app.component(LoggerExtensionComponent);
 
-export class MessageBusQueueConnectorsComponent implements Component {
-  constructor() {
-    // Intentionally left empty
+    this.services = [EventHandlerService];
   }
-
-  providers?: ProviderMap = {
-    [QueueBindings.ProducerProvider.key]: QueueProducerProvider,
-  };
-
-  bindings?: Binding[] = [
-    Binding.bind(SQSBindings.Config.key).to(null),
-    Binding.bind(BullMQBindings.Config.key).to(null),
-  ];
 }
