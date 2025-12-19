@@ -14,7 +14,7 @@ import {QueueType} from '../../../types';
 
 export class EventController {
   constructor(
-    @service(EventHandlerService)
+    @inject('services.EventHandlerService')
     private eventHandler: EventHandlerService,
     @inject(LOGGER.LOGGER_INJECT)
     private logger: ILogger,
