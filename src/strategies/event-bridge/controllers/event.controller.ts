@@ -1,5 +1,5 @@
 import {post, param, requestBody} from '@loopback/rest';
-import {inject, service} from '@loopback/core';
+import {inject} from '@loopback/core';
 import {AnyObject} from '@loopback/repository';
 import {EventHandlerService} from '../../../services';
 import {
@@ -14,7 +14,7 @@ import {QueueType} from '../../../types';
 
 export class EventController {
   constructor(
-    @service(EventHandlerService)
+    @inject('services.EventHandlerService')
     private eventHandler: EventHandlerService,
     @inject(LOGGER.LOGGER_INJECT)
     private logger: ILogger,
