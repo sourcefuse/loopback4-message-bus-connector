@@ -50,7 +50,7 @@
     "postinstall": "npm run build",
     "prune": "npm prune --production",
     "prepublishOnly": "npm run test",
-    "prepare": "husky install",
+    "prepare": "husky install || true",
     "release": "HUSKY=0 semantic-release --no-ci"
   },
   "repository": {
