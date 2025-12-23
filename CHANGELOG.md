@@ -1,3 +1,12 @@
+## Release [v2.0.4](https://github.com/sourcefuse/loopback4-message-bus-connector/compare/v2.0.3..v2.0.4) December 23, 2025
+Welcome to the December 23, 2025 release of loopback4-message-bus-connector. There are many updates in this version that we hope you will like, the key highlights include:
+
+  - [](https://github.com/sourcefuse/loopback4-message-bus-connector/issues/) :- [](https://github.com/sourcefuse/loopback4-message-bus-connector/commit/459e3612a99429eb07b8cf2743d59441516fc01f) was commited on December 23, 2025 by [yeshamavani](mailto:83634146+yeshamavani@users.noreply.github.com)
+    
+  
+Clink on the above links to understand the changes in detail.
+  ___
+
 ## Release [v2.0.1](https://github.com/sourcefuse/loopback4-message-bus-connector/compare/v2.0.0..v2.0.1) December 23, 2025
 Welcome to the December 23, 2025 release of loopback4-message-bus-connector. There are many updates in this version that we hope you will like, the key highlights include:
 
