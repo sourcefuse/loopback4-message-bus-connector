@@ -51,6 +51,7 @@ jobs:
           HUSKY=0 npx semantic-release
         env:
           GH_TOKEN: ${{ secrets.RELEASE_COMMIT_GH_PAT }}
+          npm_config_ignore_scripts: true
           # REMOVED: NPM_TOKEN is not needed with trusted publishing
           # The id-token: write permission above handles authentication
 
