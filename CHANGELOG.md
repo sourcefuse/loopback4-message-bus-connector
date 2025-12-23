@@ -1,3 +1,46 @@
+## Release [v2.0.1](https://github.com/sourcefuse/loopback4-message-bus-connector/compare/v2.0.0..v2.0.1) December 23, 2025
+Welcome to the December 23, 2025 release of loopback4-message-bus-connector. There are many updates in this version that we hope you will like, the key highlights include:
+
+  - [](https://github.com/sourcefuse/loopback4-message-bus-connector/issues/0) :- [](https://github.com/sourcefuse/loopback4-message-bus-connector/commit/44be7dbe9a2635c2d019d52236dff31b16aa6afe) was commited on December 23, 2025 by [Sunny  Tyagi](mailto:sunny.tyagi@sourcefuse.com)
+    
+      - update repo name
+      
+      - GH-0
+      
+  
+  - [](https://github.com/sourcefuse/loopback4-message-bus-connector/issues/0) :- [](https://github.com/sourcefuse/loopback4-message-bus-connector/commit/ee74dc5cb5433dc4ad1829f3b73197c14a6568c3) was commited on December 23, 2025 by [Sunny  Tyagi](mailto:sunny.tyagi@sourcefuse.com)
+    
+      - trusted publisher using oidc
+      
+      - GH-0
+      
+  
+  - [](https://github.com/sourcefuse/loopback4-message-bus-connector/issues/0) :- [](https://github.com/sourcefuse/loopback4-message-bus-connector/commit/f20d9fd2eefdb87833f275321d4add2b04c2f180) was commited on December 22, 2025 by [Sunny  Tyagi](mailto:sunny.tyagi@sourcefuse.com)
+    
+      - rebase
+      
+      - GH-0
+      
+  
+  - [](https://github.com/sourcefuse/loopback4-message-bus-connector/issues/0) :- [](https://github.com/sourcefuse/loopback4-message-bus-connector/commit/820fa97ebf7857697cdbb000aff32d29d962eb88) was commited on December 22, 2025 by [Sunny  Tyagi](mailto:sunny.tyagi@sourcefuse.com)
+    
+      - remove service decorator , use inject
+      
+      - GH-0
+      
+  
+  - [](https://github.com/sourcefuse/loopback4-message-bus-connector/issues/) :- [](https://github.com/sourcefuse/loopback4-message-bus-connector/commit/1272e50c8aafb77e4cfdc887bb821c5fca5bf581) was commited on December 19, 2025 by [Piyush Singh Gaur](mailto:piyush.singh@sourcefuse.com)
+    
+  
+  - [](https://github.com/sourcefuse/loopback4-message-bus-connector/issues/) :- [](https://github.com/sourcefuse/loopback4-message-bus-connector/commit/76067453d030a10072f70bbb0af2b7ed3b5f31ef) was commited on December 15, 2025 by [Piyush Singh Gaur](mailto:piyush.singh@sourcefuse.com)
+    
+  
+  - [](https://github.com/sourcefuse/loopback4-message-bus-connector/issues/) :- [](https://github.com/sourcefuse/loopback4-message-bus-connector/commit/eef6bcf8d7bdb07b303a7e7bc3d2c54bdac0e059) was commited on October 28, 2025 by [yeshamavani](mailto:83634146+yeshamavani@users.noreply.github.com)
+    
+  
+Clink on the above links to understand the changes in detail.
+  ___
+
 ## Release [v2.0.0](https://github.com/sourcefuse/loopback4-message-bus-connector/compare/v1.0.0..v2.0.0) October 14, 2025
 Welcome to the October 14, 2025 release of loopback4-message-bus-connector. There are many updates in this version that we hope you will like, the key highlights include:
 
