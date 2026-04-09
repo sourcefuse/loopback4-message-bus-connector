@@ -33,18 +33,24 @@ function runBullMqConnectorTests(
     let producerService: TestProducerService;
     let listenerStub: sinon.SinonStub;
 
-    before(async function () {
-      if (!condition()) this.skip();
-      producerApp = await setupProducerApplication(queue);
-      producerService = producerApp.getSync<TestProducerService>(
-        `services.TestProducerService`,
-      );
-      listenerStub = sinon.stub().resolves();
-      queue.register(listenerStub);
+    /* eslint-disable @typescript-eslint/no-invalid-this */
+    before(function () {
+      if (!condition()) {
+        this.skip();
+      }
+      return setupProducerApplication(queue).then(app => {
+        producerApp = app;
+        producerService = producerApp.getSync<TestProducerService>(
+          `services.TestProducerService`,
+        );
+        listenerStub = sinon.stub().resolves();
+        queue.register(listenerStub);
+      });
     });
+    /* eslint-enable @typescript-eslint/no-invalid-this */
 
     beforeEach(() => listenerStub.reset());
-    after(async () => await producerApp?.stop());
+    after(async () => producerApp?.stop());
 
     runProducerTests(
       () => listenerStub,

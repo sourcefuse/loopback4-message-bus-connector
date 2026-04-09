@@ -8,9 +8,9 @@ import {Producer} from '../../../types';
 @injectable({
   scope: BindingScope.TRANSIENT,
 })
-export class EventBridgeProducerService<Stream extends AnyObject = AnyObject>
-  implements Producer<Stream>
-{
+export class EventBridgeProducerService<
+  Stream extends AnyObject = AnyObject,
+> implements Producer<Stream> {
   private source: string = DEFAULT_SOURCE;
   private eventBusName: string;
 
