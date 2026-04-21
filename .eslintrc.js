@@ -1,5 +1,6 @@
 module.exports = {
   extends: '@loopback/eslint-config',
+  ignorePatterns: ['commitlint.config.js', 'src/release_notes/**/*.js'],
   rules: {
     'no-extra-boolean-cast': 'off',
     '@typescript-eslint/interface-name-prefix': 'off',

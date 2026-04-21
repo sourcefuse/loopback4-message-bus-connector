@@ -2,6 +2,8 @@ const https = require('node:https');
 const jsdom = require('jsdom');
 module.exports = async function (data, callback) {
   const rewritten = [];
+  const issuePromises = [];
+
   for (const commit of data.commits) {
     if (commit.title.indexOf('chore(release)') !== -1) {
       continue;
@@ -20,11 +22,19 @@ module.exports = async function (data, callback) {
         : null;
     });
 
-    const issueDesc = await getIssueDesc(commit.issueno).then(res => {
-      return res;
-    });
-    commit.issueTitle = issueDesc;
+    // Collect all promises
+    issuePromises.push(
+      getIssueDesc(commit.issueno).then(issueDesc => {
+        commit.issueTitle = issueDesc;
+        return commit;
+      }),
+    );
+  }
 
+  // Wait for all promises to resolve
+  const commitsWithIssues = await Promise.all(issuePromises);
+
+  for (const commit of commitsWithIssues) {
     commit.committerDate = new Date(commit.committerDate).toLocaleDateString(
       'en-us',
       {
@@ -35,6 +45,7 @@ module.exports = async function (data, callback) {
     );
     rewritten.push(commit);
   }
+
   callback({
     commits: rewritten.filter(Boolean),
     range: data.range,

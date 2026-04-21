@@ -1,7 +1,7 @@
 import {BindingKey} from '@loopback/core';
 import {Config as SQSConfig} from './types';
 import {producerKeyForQueue} from '../../utils';
-import {Producer, QueueType} from '../../types';
+import {Producer as ProducerType, QueueType} from '../../types';
 import {SQSClient} from '@aws-sdk/client-sqs';
 import {EventStreamConnectorNamespace} from '../../keys';
 
@@ -14,7 +14,7 @@ export namespace SQSBindings {
     `${EventStreamConnectorNamespace}.sqs.client`,
   );
 
-  export const Producer = BindingKey.create<Producer>(
+  export const Producer = BindingKey.create<ProducerType>(
     producerKeyForQueue(QueueType.SQS),
   );
   export const SQSConsumerProvider = BindingKey.create<void>(

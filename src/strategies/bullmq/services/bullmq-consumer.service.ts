@@ -105,7 +105,10 @@ export class BullMQConsumerService {
         clearInterval(interval);
         return;
       }
-      void this.autoScaler();
+      // Explicitly ignore the promise as we're firing and forgetting
+      this.autoScaler().catch(err => {
+        this.logger.error('AutoScaler error:', err);
+      });
     }, this.queuePollInterval);
   }
 

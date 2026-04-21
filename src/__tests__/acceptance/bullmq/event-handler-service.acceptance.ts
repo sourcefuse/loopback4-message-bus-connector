@@ -15,8 +15,6 @@ interface MockBullMQConsumerService {
   processMessage: sinon.SinonStub;
 }
 
-let mockBullMQConsumerService: MockBullMQConsumerService;
-
 describe('EventHandlerService', () => {
   let consumerApp: ConsumerApp;
   let consumerStub: sinon.SinonStub;
