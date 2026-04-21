@@ -1,3 +1,20 @@
+## Release [v2.0.5](https://github.com/sourcefuse/loopback4-message-bus-connector/compare/v2.0.4..v2.0.5) April 21, 2026
+Welcome to the April 21, 2026 release of loopback4-message-bus-connector. There are many updates in this version that we hope you will like, the key highlights include:
+
+  - [](https://github.com/sourcefuse/loopback4-message-bus-connector/issues/) :- [](https://github.com/sourcefuse/loopback4-message-bus-connector/commit/daaf804881734c07add3b07443b69fa666248733) was commited on April 21, 2026 by [yeshamavani](mailto:83634146+yeshamavani@users.noreply.github.com)
+    
+      - Updated npm ci command to ignore scripts during installation.
+      
+  
+  - [](https://github.com/sourcefuse/loopback4-message-bus-connector/issues/) :- [](https://github.com/sourcefuse/loopback4-message-bus-connector/commit/4c67594ccea7cfbe943796d84e59c5d74663a91b) was commited on April 15, 2026 by [Vinay Gupta](mailto:vinay.gupta@sourcefuse.com)
+    
+  
+  - [](https://github.com/sourcefuse/loopback4-message-bus-connector/issues/) :- [](https://github.com/sourcefuse/loopback4-message-bus-connector/commit/3c354803c4af17c1c337b89f48bde206f4d38815) was commited on April 14, 2026 by [Sourav Kashyap](mailto:sourav.kashyap@sourcefuse.com)
+    
+  
+Clink on the above links to understand the changes in detail.
+  ___
+
 ## Release [v2.0.4](https://github.com/sourcefuse/loopback4-message-bus-connector/compare/v2.0.3..v2.0.4) December 23, 2025
 Welcome to the December 23, 2025 release of loopback4-message-bus-connector. There are many updates in this version that we hope you will like, the key highlights include:
 
