@@ -1,3 +1,18 @@
+## Release [v3.0.0](https://github.com/sourcefuse/loopback4-message-bus-connector/compare/v2.0.5..v3.0.0) June 16, 2026
+Welcome to the June 16, 2026 release of loopback4-message-bus-connector. There are many updates in this version that we hope you will like, the key highlights include:
+
+  - [](https://github.com/sourcefuse/loopback4-message-bus-connector/issues/22) :- [](https://github.com/sourcefuse/loopback4-message-bus-connector/commit/31e6166bb2e3304d3bebf0b2bb849d9412dd17a0) was commited on June 16, 2026 by [Sourav Kashyap](mailto:sourav.kashyap@sourcefuse.com)
+    
+      - remove Node js 20 support
+      
+      - BREAKING CHANGE: yes
+      
+      - GH-22
+      
+  
+Clink on the above links to understand the changes in detail.
+  ___
+
 ## Release [v2.0.5](https://github.com/sourcefuse/loopback4-message-bus-connector/compare/v2.0.4..v2.0.5) April 21, 2026
 Welcome to the April 21, 2026 release of loopback4-message-bus-connector. There are many updates in this version that we hope you will like, the key highlights include:
 
