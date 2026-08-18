@@ -48,7 +48,7 @@ jobs:
         run: |
           npm config set provenance true
 
-          HUSKY=0 npx semantic-release
+          HUSKY=0 npx --ignore-scripts semantic-release@25.0.9
         env:
           GH_TOKEN: ${{ secrets.RELEASE_COMMIT_GH_PAT }}
           npm_config_ignore_scripts: true
