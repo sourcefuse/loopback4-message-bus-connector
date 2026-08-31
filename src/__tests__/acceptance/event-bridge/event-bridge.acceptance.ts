@@ -41,6 +41,7 @@ import {DEFAULT_SOURCE} from '../../../constants';
     describe('Producer', () => {
       it('should produce an event for a particular topic', async () => {
         await producerService.produceEventA('test string');
+        expect(listenerStub.callCount).to.equal(1);
         sinon.assert.calledWithExactly(listenerStub, Events.A, DEFAULT_SOURCE, {
           name: 'Event A',
           data: 'test string',

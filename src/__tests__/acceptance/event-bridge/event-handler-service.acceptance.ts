@@ -35,6 +35,7 @@ describe('EventHandlerService', () => {
       },
       QueueType.EventBridge,
     );
+    expect(consumerStub.callCount).to.equal(1);
     sinon.assert.calledWithExactly(consumerStub, {
       name: 'Event A',
       data: 'test string',

@@ -1,4 +1,4 @@
-import {sinon} from '@loopback/testlab';
+import {expect, sinon} from '@loopback/testlab';
 import {ProducerApp} from './fixtures/producers-app';
 import {TestProducerService} from './fixtures/services/test-producer.service';
 import {setupProducerApplication} from './helpers/app-builder';
@@ -70,6 +70,7 @@ function runProducerTests(
 
       await producerService.produceEventA('test string');
 
+      expect(listenerStub.callCount).to.equal(1);
       sinon.assert.calledWithExactly(
         listenerStub,
         'Event A',
@@ -85,6 +86,7 @@ function runProducerTests(
       const data = ['test string 1', 'test string 2'];
       await producerService.produceMultipleA(data);
 
+      expect(listenerStub.callCount).to.equal(1);
       sinon.assert.calledWithExactly(
         listenerStub,
         JSON.stringify(
