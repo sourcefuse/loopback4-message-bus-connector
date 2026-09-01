@@ -70,6 +70,10 @@ describe('SQSProducerProvider', () => {
       sendStub,
       sinon.match.instanceOf(SendMessageCommand),
     );
+
+    const command = sendStub.firstCall.args[0] as SendMessageCommand;
+    expect(command.input.MessageBody).to.equal(JSON.stringify({foo: 'bar'}));
+    expect(command.input.QueueUrl).to.equal(fakeSQSConfig.queueConfig.QueueUrl);
   });
 
   it('should send multiple messages using sendMultiple()', async () => {
@@ -89,6 +93,10 @@ describe('SQSProducerProvider', () => {
       sendStub,
       sinon.match.instanceOf(SendMessageBatchCommand),
     );
+
+    const command = sendStub.firstCall.args[0] as SendMessageBatchCommand;
+    expect(command.input.QueueUrl).to.equal(fakeSQSConfig.queueConfig.QueueUrl);
+    expect(command.input.Entries).to.have.length(2);
   });
 
   it('should log partial failures on sendMultiple()', async () => {
@@ -107,5 +115,7 @@ describe('SQSProducerProvider', () => {
       sinon.match.string,
       sinon.match.string,
     );
+    expect(loggerStub.warn.callCount).to.equal(1);
+    expect(loggerStub.warn.firstCall.args[1]).to.match(/Failed to send/);
   });
 });

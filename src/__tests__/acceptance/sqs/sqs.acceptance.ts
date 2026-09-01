@@ -1,4 +1,4 @@
-import {sinon} from '@loopback/testlab';
+import {expect, sinon} from '@loopback/testlab';
 import {ProducerApp} from './fixtures/producers-app';
 import {TestProducerService} from './fixtures/services/test-producer.service';
 import {setupProducerApplication} from './helpers/app-builder';
@@ -48,6 +48,7 @@ import {SQSClientStub} from './stubs/sqs-client.stub';
           },
         };
         await producerService.produceEventA(data);
+        expect(listenerStub.callCount).to.equal(1);
         sinon.assert.calledWithExactly(
           listenerStub,
           'type A',
@@ -79,6 +80,7 @@ import {SQSClientStub} from './stubs/sqs-client.stub';
           },
         ];
         await producerService.produceMultipleA(data);
+        expect(listenerStub.callCount).to.equal(1);
         sinon.assert.calledWithExactly(
           listenerStub,
           'type A',

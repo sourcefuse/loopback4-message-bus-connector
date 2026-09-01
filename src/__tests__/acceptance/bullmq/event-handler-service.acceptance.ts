@@ -1,4 +1,4 @@
-import {sinon} from '@loopback/testlab';
+import {expect, sinon} from '@loopback/testlab';
 import {EventHandlerService} from '../../../services';
 import {ConsumerApp} from './fixtures/consumer-app';
 import {Events, TestStream} from '../test-stream';
@@ -70,6 +70,7 @@ describe('EventHandlerService', () => {
       },
       QueueType.BullMQ,
     );
+    expect(consumerStub.callCount).to.equal(1);
     sinon.assert.calledWithExactly(consumerStub, {
       name: 'Event A',
       data: 'test string',
