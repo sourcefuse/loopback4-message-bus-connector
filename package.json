@@ -124,46 +124,12 @@
     "lodash": "^4.18.0",
     "underscore": "^1.13.8",
     "undici": "^6.24.0",
-    "postman-request": {
-      ".": "2.88.1-postman.49",
-      "qs": "^6.16.2",
-      "uuid": "^11.1.1"
-    },
-    "casbin": {
-      "csv-parse": "^7.0.2",
-      "minimatch": "^11.0.1"
-    },
-    "hyperid": {
-      "uuid": "^11.1.1"
-    },
-    "node-jose": {
-      "uuid": "^11.1.1"
-    },
-    "swagger-stats-sf": {
-      "uuid": "^11.1.1"
-    },
-    "qs": "^6.16.2",
-    "@sourceloop/core": {
-      "glob": "^14.0.2",
-      "minimatch": "^11.0.1"
-    },
-    "@loopback/build": {
-      "glob": "^14.0.2",
-      "minimatch": "^11.0.1"
-    },
-    "@loopback/boot": {
-      "glob": "^14.0.2"
-    },
-    "typescript-eslint": {
-      "minimatch": "^11.0.1"
-    },
-    "loopback-datasource-juggler": {
-      "minimatch": "^11.0.1",
-      "qs": "^6.16.2"
-    },
-    "@typescript-eslint/typescript-estree": {
-      "minimatch": "^11.0.1"
-    }
+    "postman-request": "2.88.1-postman.49",
+    "qs@<6.16.1": "^6.16.2",
+    "csv-parse@^5": "^7.0.2",
+    "glob@>=10": "^14.0.2",
+    "minimatch@>=10 <12": "^11.0.1",
+    "uuid@<12": "^11.1.1"
   },
   "config": {
     "commitizen": {
